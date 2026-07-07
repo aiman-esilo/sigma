@@ -1,1 +1,328 @@
-s
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#17365D">
+  <title>SIGMA | Sistem Integrasi Governan Maklumat</title>
+  <style>
+    :root{
+      --blue:#17365D;
+      --blue2:#1F4E79;
+      --gold:#D9A441;
+      --bg:#F4F6F9;
+      --card:#FFFFFF;
+      --text:#1F2937;
+      --muted:#6B7280;
+      --line:#E5E7EB;
+      --green:#0F766E;
+      --red:#B91C1C;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      background:var(--bg);
+      font-family:Segoe UI,Arial,sans-serif;
+      color:var(--text);
+      overflow:hidden;
+    }
+    .shell{
+      height:100vh;
+      display:flex;
+      flex-direction:column;
+      background:var(--bg);
+    }
+    .topbar{
+      background:linear-gradient(135deg,var(--blue),var(--blue2));
+      color:white;
+      border-bottom:4px solid var(--gold);
+      padding:14px 18px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:14px;
+      box-shadow:0 4px 16px rgba(0,0,0,.12);
+      z-index:10;
+    }
+    .brand{min-width:260px}
+    .brand h1{
+      margin:0;
+      font-size:20px;
+      line-height:1.25;
+      letter-spacing:.4px;
+      font-weight:900;
+      text-transform:uppercase;
+    }
+    .brand .sub{
+      margin-top:3px;
+      font-size:12px;
+      opacity:.9;
+      letter-spacing:.3px;
+      text-transform:uppercase;
+      font-weight:700;
+    }
+    .nav{
+      display:flex;
+      align-items:center;
+      justify-content:flex-end;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+    .nav button,.nav a{
+      border:1px solid rgba(255,255,255,.28);
+      background:rgba(255,255,255,.12);
+      color:#fff;
+      text-decoration:none;
+      padding:9px 12px;
+      border-radius:999px;
+      font-size:13px;
+      font-weight:800;
+      cursor:pointer;
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+    }
+    .nav button:hover,.nav a:hover{background:rgba(255,255,255,.22)}
+    .nav button.active{background:var(--gold);border-color:var(--gold);color:#111827}
+    .main{
+      flex:1;
+      min-height:0;
+      display:flex;
+      flex-direction:column;
+    }
+    .notice{
+      display:none;
+      margin:12px;
+      background:#FFF7ED;
+      color:#7C2D12;
+      border:1px solid #FDBA74;
+      border-radius:12px;
+      padding:13px 14px;
+      line-height:1.5;
+      font-size:13px;
+    }
+    .notice.show{display:block}
+    .frame-wrap{
+      flex:1;
+      min-height:0;
+      padding:0;
+      background:#E5E7EB;
+      position:relative;
+    }
+    iframe{
+      width:100%;
+      height:100%;
+      border:0;
+      display:block;
+      background:white;
+    }
+    .loading-mask{
+      position:absolute;
+      inset:0;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:linear-gradient(180deg,rgba(244,246,249,.96),rgba(229,231,235,.96));
+      color:var(--blue);
+      font-weight:900;
+      letter-spacing:.2px;
+      z-index:2;
+    }
+    .loading-mask.hidden{display:none}
+    .setup{
+      display:none;
+      flex:1;
+      align-items:center;
+      justify-content:center;
+      padding:18px;
+    }
+    .setup.show{display:flex}
+    .setup-card{
+      width:min(850px,100%);
+      background:white;
+      border:1px solid var(--line);
+      border-radius:18px;
+      box-shadow:0 12px 30px rgba(0,0,0,.08);
+      padding:22px;
+      line-height:1.55;
+    }
+    .setup-card h2{
+      margin:0 0 8px;
+      color:var(--blue);
+      font-size:22px;
+    }
+    .setup-card code{
+      background:#F3F4F6;
+      border:1px solid #E5E7EB;
+      padding:2px 6px;
+      border-radius:6px;
+      font-family:Consolas,monospace;
+      font-size:12px;
+    }
+    .setup-card pre{
+      white-space:pre-wrap;
+      background:#111827;
+      color:#F9FAFB;
+      padding:14px;
+      border-radius:12px;
+      overflow:auto;
+      font-size:12px;
+      line-height:1.5;
+    }
+    .status-pill{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      padding:7px 10px;
+      border-radius:999px;
+      background:rgba(255,255,255,.14);
+      border:1px solid rgba(255,255,255,.22);
+      font-size:12px;
+      font-weight:800;
+    }
+    @media(max-width:760px){
+      body{overflow:auto}
+      .shell{min-height:100vh;height:auto}
+      .topbar{align-items:flex-start;flex-direction:column;padding:13px}
+      .brand{min-width:0;width:100%}
+      .brand h1{font-size:17px}
+      .nav{width:100%;justify-content:flex-start}
+      .nav button,.nav a{flex:1;justify-content:center;border-radius:12px}
+      .main{min-height:calc(100vh - 145px)}
+      .frame-wrap{min-height:calc(100vh - 145px)}
+      iframe{min-height:calc(100vh - 145px)}
+      .status-pill{width:100%;justify-content:center}
+    }
+  </style>
+</head>
+<body>
+  <!--
+    SIGMA VERCEL SINGLE CODE
+    1. Deploy kod asal Apps Script seperti biasa dan pastikan Code.gs menggunakan:
+       .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL)
+    2. Salin URL Web App yang berakhir dengan /exec.
+    3. Tampal URL tersebut pada SIGMA_APPS_SCRIPT_URL di bawah.
+    4. Upload fail ini ke GitHub dan deploy melalui Vercel.
+  -->
+
+  <script>
+    /*****************************************************************
+     * TETAPAN UTAMA
+     * Letak URL Web App Apps Script SIGMA di sini.
+     * Contoh: https://script.google.com/macros/s/AKfycbxxxx/exec
+     *****************************************************************/
+    const SIGMA_APPS_SCRIPT_URL = 'PASTE_URL_APPS_SCRIPT_EXEC_DI_SINI';
+
+    // Paparan default: 'lapangan' atau 'admin'
+    const DEFAULT_MODE = 'lapangan';
+  </script>
+
+  <div class="shell">
+    <header class="topbar">
+      <div class="brand">
+        <h1>Sistem Integrasi Governan Maklumat</h1>
+        <div class="sub">SIGMA · KPDN Pulau Pinang</div>
+      </div>
+      <div class="nav">
+        <span id="statusPill" class="status-pill">Status: Menyemak konfigurasi</span>
+        <button id="btnLapangan" type="button" onclick="openSigma('lapangan')">Pegawai Lapangan</button>
+        <button id="btnAdmin" type="button" onclick="openSigma('admin')">Pentadbir</button>
+        <a id="openDirect" href="#" target="_blank" rel="noopener">Buka Penuh</a>
+      </div>
+    </header>
+
+    <main id="main" class="main">
+      <div id="notice" class="notice"></div>
+      <section id="setup" class="setup">
+        <div class="setup-card">
+          <h2>Konfigurasi belum lengkap</h2>
+          <p>Fail ini sudah sedia untuk GitHub dan Vercel, tetapi URL Web App Apps Script belum dimasukkan.</p>
+          <p>Buka <code>index.html</code>, cari baris ini dan gantikan dengan URL <code>/exec</code> Apps Script SIGMA:</p>
+          <pre>const SIGMA_APPS_SCRIPT_URL = 'PASTE_URL_APPS_SCRIPT_EXEC_DI_SINI';</pre>
+          <p>Selepas itu, deploy ke Vercel. Paparan Vercel akan memuatkan sistem asal melalui iframe, manakala struktur Apps Script + Google Sheet kekal digunakan.</p>
+        </div>
+      </section>
+
+      <section id="frameWrap" class="frame-wrap">
+        <div id="loadingMask" class="loading-mask">Memuatkan SIGMA...</div>
+        <iframe id="sigmaFrame" title="SIGMA KPDN Pulau Pinang" allow="clipboard-read; clipboard-write; fullscreen" loading="eager"></iframe>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    function isConfigured(){
+      return SIGMA_APPS_SCRIPT_URL && !SIGMA_APPS_SCRIPT_URL.includes('PASTE_URL_APPS_SCRIPT_EXEC_DI_SINI');
+    }
+
+    function cleanBaseUrl(){
+      return String(SIGMA_APPS_SCRIPT_URL || '').trim().replace(/\?+$/,'');
+    }
+
+    function getModeFromUrl(){
+      const params = new URLSearchParams(window.location.search);
+      const mode = (params.get('mode') || DEFAULT_MODE || 'lapangan').toLowerCase();
+      return mode === 'admin' ? 'admin' : 'lapangan';
+    }
+
+    function buildUrl(mode){
+      const base = cleanBaseUrl();
+      const joiner = base.includes('?') ? '&' : '?';
+      return base + joiner + 'mode=' + encodeURIComponent(mode);
+    }
+
+    function setNotice(text,type){
+      const el = document.getElementById('notice');
+      if(!text){ el.className='notice'; el.innerHTML=''; return; }
+      el.className='notice show';
+      el.innerHTML=text;
+    }
+
+    function setActive(mode){
+      document.getElementById('btnLapangan').classList.toggle('active', mode === 'lapangan');
+      document.getElementById('btnAdmin').classList.toggle('active', mode === 'admin');
+      document.getElementById('statusPill').textContent = 'Status: ' + (mode === 'admin' ? 'Pentadbir' : 'Pegawai Lapangan');
+    }
+
+    function openSigma(mode){
+      if(!isConfigured()){
+        document.getElementById('setup').classList.add('show');
+        document.getElementById('frameWrap').style.display = 'none';
+        document.getElementById('openDirect').href = '#';
+        document.getElementById('statusPill').textContent = 'Status: Perlu konfigurasi';
+        setNotice('Sila masukkan URL Web App Apps Script pada <b>SIGMA_APPS_SCRIPT_URL</b> sebelum deploy ke Vercel.','warn');
+        return;
+      }
+
+      mode = mode === 'admin' ? 'admin' : 'lapangan';
+      const target = buildUrl(mode);
+      const frame = document.getElementById('sigmaFrame');
+      const mask = document.getElementById('loadingMask');
+
+      setActive(mode);
+      document.getElementById('setup').classList.remove('show');
+      document.getElementById('frameWrap').style.display = 'block';
+      document.getElementById('openDirect').href = target;
+      setNotice('', '');
+
+      mask.classList.remove('hidden');
+      frame.src = target;
+
+      const url = new URL(window.location.href);
+      url.searchParams.set('mode', mode);
+      window.history.replaceState({}, '', url.toString());
+    }
+
+    document.getElementById('sigmaFrame').addEventListener('load', function(){
+      document.getElementById('loadingMask').classList.add('hidden');
+    });
+
+    window.addEventListener('message', function(event){
+      // Ruang ini disediakan jika kemudian hari Apps Script mahu menghantar mesej status kepada Vercel.
+    });
+
+    openSigma(getModeFromUrl());
+  </script>
+</body>
+</html>
