@@ -2,327 +2,2070 @@
 <html lang="ms">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#17365D">
-  <title>SIGMA | Sistem Integrasi Governan Maklumat</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SIGMA - Sistem Integrasi Governan Maklumat dan Akta</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
   <style>
-    :root{
-      --blue:#17365D;
-      --blue2:#1F4E79;
-      --gold:#D9A441;
-      --bg:#F4F6F9;
-      --card:#FFFFFF;
-      --text:#1F2937;
-      --muted:#6B7280;
-      --line:#E5E7EB;
-      --green:#0F766E;
-      --red:#B91C1C;
+    :root {
+      --primary: #061a33;      
+      --primary-light: #175da5; 
+      --primary-dark: #041224;
+      --accent: #d7ad4b;       
+      --accent-light: #e7c96e; 
+      --bg: #eef3f8;
+      --surface: #ffffff;
+      --text: #15263d;
+      --muted: #66758a;
+      --border: #dce5ef;
+      --success: #0f766e;
+      --warning: #b45309;
+      --danger: #b91c1c;
+      --info: #155eef;
+      --shadow: 0 10px 25px rgba(6, 26, 51, 0.075);
     }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0;
-      background:var(--bg);
-      font-family:Segoe UI,Arial,sans-serif;
-      color:var(--text);
-      overflow:hidden;
+    
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(180deg, #edf3f9 0%, #f7f9fc 440px, #eef3f8 100%);
+      color: var(--text);
+      font-size: 13px;
+      -webkit-font-smoothing: antialiased;
+      line-height: 1.5;
     }
-    .shell{
-      height:100vh;
-      display:flex;
-      flex-direction:column;
-      background:var(--bg);
+
+    body::before {
+      content: "";
+      display: block;
+      height: 5px;
+      background: linear-gradient(90deg, var(--accent), #f4d98f, var(--accent));
+      position: fixed;
+      left: 0; right: 0; top: 0;
+      z-index: 9999;
     }
-    .topbar{
-      background:linear-gradient(135deg,var(--blue),var(--blue2));
-      color:white;
-      border-bottom:4px solid var(--gold);
-      padding:14px 18px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:14px;
-      box-shadow:0 4px 16px rgba(0,0,0,.12);
-      z-index:10;
+
+    .sigma-exec-header {
+      background: radial-gradient(circle at 72% 10%, rgba(48,126,204,.35), transparent 28%), linear-gradient(126deg, #05162c 0%, #09284a 58%, #0b3c6c 100%);
+      color: #fff;
+      box-shadow: 0 18px 42px rgba(2,18,38,.22);
+      position: sticky;
+      top: 0;
+      z-index: 9997;
+      overflow: hidden;
+      border-bottom: 1px solid rgba(215,173,75,.78);
     }
-    .brand{min-width:260px}
-    .brand h1{
-      margin:0;
-      font-size:20px;
-      line-height:1.25;
-      letter-spacing:.4px;
-      font-weight:900;
-      text-transform:uppercase;
+
+    .sigma-exec-inner {
+      max-width: 1380px;
+      margin: auto;
+      padding: 22px 22px 18px;
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 22px;
+      align-items: center;
     }
-    .brand .sub{
-      margin-top:3px;
-      font-size:12px;
-      opacity:.9;
-      letter-spacing:.3px;
-      text-transform:uppercase;
-      font-weight:700;
+
+    .sigma-brand-row { display: flex; align-items: center; gap: 18px; min-width: 0; }
+    
+    .sigma-brand-seal {
+      width: 76px; height: 76px; border-radius: 22px;
+      background: linear-gradient(145deg, #fff, #dbeafe);
+      border: 2px solid rgba(255,255,255,.8);
+      box-shadow: 0 12px 30px rgba(0,0,0,.24);
+      display: flex; align-items: center; justify-content: center;
+      flex: 0 0 auto; overflow: hidden; padding: 5px;
+      color: var(--primary); font-size: 32px; font-weight: 900;
     }
-    .nav{
-      display:flex;
-      align-items:center;
-      justify-content:flex-end;
-      gap:8px;
-      flex-wrap:wrap;
+
+    .sigma-brand-copy .sigma-name { font-size: 34px; font-weight: 950; letter-spacing: 4px; line-height: 1; color: #e7c96e; text-shadow: 0 4px 18px rgba(0,0,0,.25); margin-bottom: 6px; }
+    .sigma-brand-copy .sigma-full { font-size: 15px; font-weight: 850; letter-spacing: 0.75px; }
+    .sigma-brand-copy .sigma-branch { font-size: 12px; font-weight: 850; letter-spacing: 2.2px; color: #edca66; margin-top: 6px; }
+
+    .sigma-user-card {
+      min-width: 260px;
+      padding: 13px 16px;
+      border-radius: 18px;
+      background: rgba(255,255,255,.075);
+      border: 1px solid rgba(255,255,255,.19);
+      box-shadow: inset 0 1px rgba(255,255,255,.12);
+      font-size: 11px; line-height: 1.7;
     }
-    .nav button,.nav a{
-      border:1px solid rgba(255,255,255,.28);
-      background:rgba(255,255,255,.12);
-      color:#fff;
-      text-decoration:none;
-      padding:9px 12px;
-      border-radius:999px;
-      font-size:13px;
-      font-weight:800;
-      cursor:pointer;
-      display:inline-flex;
-      align-items:center;
-      gap:6px;
+    .sigma-user-card span { color: #bcd6eb; font-weight: 800; letter-spacing: 0.8px; font-size: 9px; }
+    .sigma-user-card strong { display: block; font-size: 13px; color: #f2cf6f; font-weight: 900; margin-top: 4px; }
+    .sigma-user-card .role { margin-top: 8px; padding-top: 8px; border-top: 1px solid rgba(255,255,255,.14); }
+
+    .sigma-sim-box { margin-top: 8px; padding-top: 8px; border-top: 1px solid rgba(255,255,255,.18); }
+    .sigma-sim-box label { display: block; margin-bottom: 5px; color: #f2d47d; font-size: 9px; font-weight: 900; letter-spacing: .7px; text-transform: uppercase; }
+    .sigma-sim-select { width: 100%; padding: 6px; border-radius: 6px; background: #fff; color: #0b2d55; font: 700 11px "Inter", sans-serif; outline: none; border: none; cursor: pointer; }
+
+    .sigma-exec-nav {
+      position: relative; z-index: 2; max-width: 1380px; margin: auto; display: flex; flex-wrap: wrap;
+      border: 1px solid rgba(215,173,75,.65); border-bottom: 0; border-radius: 18px 18px 0 0;
+      overflow: hidden; background: rgba(2,17,36,.65);
     }
-    .nav button:hover,.nav a:hover{background:rgba(255,255,255,.22)}
-    .nav button.active{background:var(--gold);border-color:var(--gold);color:#111827}
-    .main{
-      flex:1;
-      min-height:0;
-      display:flex;
-      flex-direction:column;
+    .sigma-exec-nav a {
+      flex: 1; min-width: 120px; min-height: 54px; padding: 12px 15px; display: flex; gap: 9px; align-items: center; justify-content: center;
+      color: #eaf3fd; text-decoration: none; font-size: 12px; font-weight: 900; letter-spacing: .25px;
+      border-right: 1px solid rgba(255,255,255,.12); transition: .18s; cursor: pointer;
     }
-    .notice{
-      display:none;
-      margin:12px;
-      background:#FFF7ED;
-      color:#7C2D12;
-      border:1px solid #FDBA74;
-      border-radius:12px;
-      padding:13px 14px;
-      line-height:1.5;
-      font-size:13px;
+    .sigma-exec-nav a:hover, .sigma-exec-nav a.active {
+      background: linear-gradient(180deg, rgba(215,173,75,.18), rgba(215,173,75,.07));
+      color: #f6d77c; box-shadow: inset 0 -4px var(--accent);
     }
-    .notice.show{display:block}
-    .frame-wrap{
-      flex:1;
-      min-height:0;
-      padding:0;
-      background:#E5E7EB;
-      position:relative;
+
+    .app-container { max-width: 1380px; margin: 0 auto; padding: 24px; }
+    .view-section { display: none; animation: fadeIn 0.3s ease; }
+    .view-section.active { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+    .card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: 18px;
+      padding: 24px; box-shadow: var(--shadow); margin-bottom: 24px;
     }
-    iframe{
-      width:100%;
-      height:100%;
-      border:0;
-      display:block;
-      background:white;
+    .card-header { margin-bottom: 20px; padding-bottom: 16px; border-bottom: 2px solid var(--bg); display: flex; justify-content: space-between; align-items: center;}
+    .card-header h2 { margin: 0; font-size: 18px; color: var(--primary); font-weight: 900; display: flex; align-items: center; gap: 10px; }
+    .card-header h2::before { content: ''; display: block; width: 4px; height: 20px; background: linear-gradient(180deg, var(--primary-light), var(--accent)); border-radius: 4px; }
+
+    .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px; margin-bottom: 20px;}
+    .span-2 { grid-column: 1 / -1; }
+    .input-group { display: flex; flex-direction: column; gap: 6px; }
+    .input-group label { font-size: 11px; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px;}
+    .input-group label.required::after { content: " *"; color: var(--danger); }
+    .input-group input, .input-group select, .input-group textarea {
+      padding: 12px; border: 1px solid var(--border); border-radius: 11px;
+      font-family: inherit; font-size: 13px; background: var(--surface); color: var(--text);
+      outline: none; transition: all 0.2s; box-shadow: inset 0 1px 2px rgba(16,24,40,.025);
     }
-    .loading-mask{
-      position:absolute;
-      inset:0;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      background:linear-gradient(180deg,rgba(244,246,249,.96),rgba(229,231,235,.96));
-      color:var(--blue);
-      font-weight:900;
-      letter-spacing:.2px;
-      z-index:2;
+    .input-group input:focus, .input-group select:focus, .input-group textarea:focus { border-color: var(--primary-light); box-shadow: 0 0 0 3px rgba(23, 93, 165, 0.12); }
+    .input-group input:disabled, .input-group select:disabled, .input-group input[readonly] { background: #f8fafc; color: var(--muted); cursor: not-allowed; }
+    .input-group textarea { min-height: 80px; resize: vertical; }
+
+    .toolbar { display: flex; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; align-items: center; }
+    .btn {
+      border: none; padding: 12px 20px; border-radius: 11px; font-weight: 800; font-size: 13px;
+      cursor: pointer; transition: all 0.15s; display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      box-shadow: 0 6px 14px rgba(6, 26, 51, 0.10);
     }
-    .loading-mask.hidden{display:none}
-    .setup{
-      display:none;
-      flex:1;
-      align-items:center;
-      justify-content:center;
-      padding:18px;
+    .btn:hover { transform: translateY(-1px); box-shadow: 0 10px 20px rgba(6, 26, 51, 0.16); }
+    .btn-primary { background: linear-gradient(135deg, var(--primary-dark), var(--primary-light)); color: white; }
+    .btn-gold { background: linear-gradient(135deg, #c18b20, #edcf78); color: #172033; }
+    .btn-success { background: linear-gradient(135deg, #08705f, #11937c); color: white; }
+    .btn-danger { background: linear-gradient(135deg, var(--danger), #e11d48); color: white; }
+    .btn-info { background: linear-gradient(135deg, var(--info), #3b82f6); color: white; }
+    .btn-outline { background: #eef2f7; border: 1px solid #d6e0eb; color: #243b55; box-shadow: none; }
+    .btn-outline:hover { background: #e4ebf3; box-shadow: none; }
+    .btn-small { padding: 6px 12px; font-size: 11px; border-radius: 8px; }
+
+    .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 24px; }
+    .kpi-card {
+      background: var(--surface); border: 1px solid var(--border); padding: 20px; border-radius: 18px;
+      box-shadow: 0 10px 25px rgba(6,26,51,.075); position: relative; overflow: hidden; display: flex; flex-direction: column;
     }
-    .setup.show{display:flex}
-    .setup-card{
-      width:min(850px,100%);
-      background:white;
-      border:1px solid var(--line);
-      border-radius:18px;
-      box-shadow:0 12px 30px rgba(0,0,0,.08);
-      padding:22px;
-      line-height:1.55;
+    .kpi-card::before { content: ''; position: absolute; right: -28px; top: -28px; width: 84px; height: 84px; border-radius: 50%; background: rgba(23,93,165,.07); }
+    .kpi-card::after { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 6px; background: linear-gradient(180deg, var(--primary-light), var(--accent)); }
+    .kpi-card.gold::after { background: linear-gradient(180deg, var(--accent), #f2d47d); }
+    .kpi-card.green::after { background: linear-gradient(180deg, var(--success), #4bc0a5); }
+    .kpi-card.danger::after { background: linear-gradient(180deg, var(--danger), #fca5a5); }
+    .kpi-card.info::after { background: linear-gradient(180deg, var(--info), #60a5fa); }
+    .kpi-label { font-size: 11px; color: var(--muted); font-weight: 900; text-transform: uppercase; letter-spacing: 0.65px; }
+    .kpi-val { font-size: 32px; font-weight: 950; color: var(--primary); margin-top: 8px; line-height: 1; }
+
+    .table-container { overflow-x: auto; border: 1px solid var(--border); border-radius: 15px; background: var(--surface); box-shadow: 0 7px 18px rgba(6,26,51,.045); }
+    table { width: 100%; border-collapse: collapse; text-align: left; }
+    th, td { padding: 14px 16px; border-bottom: 1px solid var(--border); vertical-align: top; }
+    th { background: linear-gradient(180deg, #0c315b, #082644); font-size: 11px; font-weight: 800; color: #fff; text-transform: uppercase; letter-spacing: 0.5px; white-space: nowrap; position: sticky; top: 0; }
+    td { font-size: 13px; color: var(--text); }
+    tbody tr:nth-child(even) td { background: #f8fafc; }
+    tbody tr:hover td { background: #edf5fd; }
+
+    .badge { padding: 6px 10px; border-radius: 999px; font-size: 10px; font-weight: 900; display: inline-flex; align-items: center; justify-content: center; letter-spacing: 0.5px; white-space: nowrap; }
+    .badge-aktif { background: #dcfce7; color: #166534; border: 1px solid #a7f3d0; }
+    .badge-tamat { background: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
+    .badge-info { background: #e0f2fe; color: #1e40af; border: 1px solid #bae6fd; }
+    .badge-warning { background: #fef3c7; color: #92400e; border: 1px solid #fde68a; }
+    .badge-dark { background: #111827; color: white; border: 1px solid #374151; }
+
+    .company-name { font-weight: 900; color: var(--primary); font-size: 14px; margin-bottom: 4px; }
+    .text-sm-muted { font-size: 11px; color: var(--muted); margin-top: 3px;}
+    .text-address { font-size: 12px; color: var(--text); margin-top: 4px; line-height: 1.4; }
+
+    .alert { padding: 12px 16px; border-radius: 12px; margin-bottom: 16px; font-weight: 700; font-size: 13px; display: none; }
+    .alert.info { background: #eff6ff; color: #1e40af; border: 1px solid #bfdbfe; display: block;}
+    .alert.error { background: #fee2e2; color: #991b1b; border: 1px solid #fecaca; display: block;}
+    .hidden { display: none !important; }
+
+    /* Modul Lapangan Specific */
+    .record-card { border: 1px solid var(--border); border-radius: 14px; overflow: hidden; margin-bottom: 16px; background: var(--surface); }
+    .record-card-header { background: #f8fafc; padding: 16px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+    .record-card-title { font-weight: 900; font-size: 15px; color: var(--primary); display: flex; align-items: center; gap: 10px; }
+    .record-details-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; padding: 16px; }
+    .detail-item { display: flex; flex-direction: column; gap: 4px; }
+    .detail-label { font-size: 11px; font-weight: 800; color: var(--muted); text-transform: uppercase; }
+    .detail-value { font-size: 14px; font-weight: 700; color: var(--text); }
+    .detail-full-width { grid-column: 1 / -1; background: #f1f5f9; padding: 14px; border-radius: 12px; border: 1px solid #e2e8f0; }
+
+    /* Borang Naziran & Admin */
+    .form-section { border: 1px solid #e4eaf3; border-radius: 14px; padding: 18px; margin-bottom: 16px; background: #fbfcfe; }
+    .form-section h3 { margin: 0 0 16px; font-size: 14px; color: var(--primary); font-weight: 900; border-bottom: 1px solid var(--border); padding-bottom: 8px;}
+    .form-footer { background: rgba(255,255,255,.98); border-top: 1px solid var(--border); padding: 16px 0 0; display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+    
+    .nz-row.viewing .edit-mode { display: none !important; }
+    .nz-row.editing .view-mode { display: none !important; }
+    .val-text { font-size: 13px; font-weight: 700; color: var(--text); padding: 6px 4px; }
+    
+    #toast-container { position: fixed; bottom: 20px; right: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 10px; }
+    .toast-msg { background: #1e293b; color: white; padding: 14px 20px; border-radius: 10px; font-weight: 600; font-size: 13px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); opacity: 0; transform: translateY(20px); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+
+    @media print {
+      .sigma-exec-header, #mainNav, #ai-chat-widget, .toolbar, .form-footer, #toast-container, .btn-ai, .pegawai-save-btn, .image-actions { display: none !important; }
+      body { background: #fff; }
+      .app-container { padding: 0; margin: 0; max-width: 100%; }
+      .card { box-shadow: none; border: none; padding: 0; margin: 0; }
+      .form-section { border: 1px solid #000; break-inside: avoid; margin-bottom: 20px;}
+      @page { margin: 1cm; }
     }
-    .setup-card h2{
-      margin:0 0 8px;
-      color:var(--blue);
-      font-size:22px;
-    }
-    .setup-card code{
-      background:#F3F4F6;
-      border:1px solid #E5E7EB;
-      padding:2px 6px;
-      border-radius:6px;
-      font-family:Consolas,monospace;
-      font-size:12px;
-    }
-    .setup-card pre{
-      white-space:pre-wrap;
-      background:#111827;
-      color:#F9FAFB;
-      padding:14px;
-      border-radius:12px;
-      overflow:auto;
-      font-size:12px;
-      line-height:1.5;
-    }
-    .status-pill{
-      display:inline-flex;
-      align-items:center;
-      gap:6px;
-      padding:7px 10px;
-      border-radius:999px;
-      background:rgba(255,255,255,.14);
-      border:1px solid rgba(255,255,255,.22);
-      font-size:12px;
-      font-weight:800;
-    }
-    @media(max-width:760px){
-      body{overflow:auto}
-      .shell{min-height:100vh;height:auto}
-      .topbar{align-items:flex-start;flex-direction:column;padding:13px}
-      .brand{min-width:0;width:100%}
-      .brand h1{font-size:17px}
-      .nav{width:100%;justify-content:flex-start}
-      .nav button,.nav a{flex:1;justify-content:center;border-radius:12px}
-      .main{min-height:calc(100vh - 145px)}
-      .frame-wrap{min-height:calc(100vh - 145px)}
-      iframe{min-height:calc(100vh - 145px)}
-      .status-pill{width:100%;justify-content:center}
+
+    /* AI Features Styles */
+    .btn-ai { background: linear-gradient(135deg, #6366f1, #8b5cf6); color: white; border: none; }
+    .btn-ai:hover { background: linear-gradient(135deg, #4f46e5, #7c3aed); box-shadow: 0 0 15px rgba(139, 92, 246, 0.4); }
+    
+    #ai-chat-widget { position: fixed; bottom: 24px; right: 24px; z-index: 9998; display: flex; flex-direction: column; align-items: flex-end; }
+    #ai-chat-btn { width: 60px; height: 60px; border-radius: 50%; background: linear-gradient(135deg, #0f172a, #1e293b); color: #fff; font-size: 28px; display: flex; align-items: center; justify-content: center; box-shadow: 0 10px 25px rgba(0,0,0,0.2); cursor: pointer; transition: all 0.3s; border: 2px solid #334155; }
+    #ai-chat-btn:hover { transform: scale(1.05); border-color: #8b5cf6; }
+    #ai-chat-window { width: 350px; height: 500px; background: #fff; border-radius: 16px; box-shadow: 0 15px 35px rgba(0,0,0,0.2); border: 1px solid var(--border); display: none; flex-direction: column; overflow: hidden; margin-bottom: 16px; transform-origin: bottom right; animation: scaleIn 0.3s ease; }
+    @keyframes scaleIn { from { opacity: 0; transform: scale(0.8); } to { opacity: 1; transform: scale(1); } }
+    #ai-chat-header { background: linear-gradient(135deg, #1e293b, #0f172a); color: #fff; padding: 16px; font-weight: 800; display: flex; justify-content: space-between; align-items: center; }
+    #ai-chat-close { cursor: pointer; opacity: 0.7; transition: 0.2s; }
+    #ai-chat-close:hover { opacity: 1; }
+    #ai-chat-body { flex: 1; padding: 16px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; background: #f8fafc; }
+    .ai-msg { padding: 10px 14px; border-radius: 12px; font-size: 13px; max-width: 85%; line-height: 1.5; }
+    .ai-msg.user { background: var(--primary); color: #fff; align-self: flex-end; border-bottom-right-radius: 4px; }
+    .ai-msg.bot { background: #e2e8f0; color: #1e293b; align-self: flex-start; border-bottom-left-radius: 4px; }
+    .ai-msg.bot strong { color: #0f172a; }
+    #ai-chat-input-area { padding: 12px; background: #fff; border-top: 1px solid var(--border); display: flex; gap: 8px; }
+    #ai-chat-input { flex: 1; padding: 10px 12px; border: 1px solid var(--border); border-radius: 20px; outline: none; font-size: 13px; }
+    #ai-chat-send { background: var(--primary); color: #fff; border: none; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.2s; }
+    #ai-chat-send:hover { background: var(--primary-light); }
+    .typing-indicator { display: flex; gap: 4px; padding: 12px 16px; background: #e2e8f0; border-radius: 12px; align-self: flex-start; border-bottom-left-radius: 4px; }
+    .typing-dot { width: 6px; height: 6px; background: #94a3b8; border-radius: 50%; animation: typing 1.4s infinite ease-in-out both; }
+    .typing-dot:nth-child(1) { animation-delay: -0.32s; }
+    .typing-dot:nth-child(2) { animation-delay: -0.16s; }
+    @keyframes typing { 0%, 80%, 100% { transform: scale(0); } 40% { transform: scale(1); } }
+
+    @media (max-width: 768px) {
+      .sigma-exec-inner { grid-template-columns: 1fr; padding: 18px 14px; }
+      .sigma-brand-copy .sigma-name { font-size: 24px; letter-spacing: 2px; }
+      .sigma-exec-nav a { min-width: 50%; }
+      .form-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
-  <!--
-    SIGMA VERCEL SINGLE CODE
-    1. Deploy kod asal Apps Script seperti biasa dan pastikan Code.gs menggunakan:
-       .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL)
-    2. Salin URL Web App yang berakhir dengan /exec.
-    3. Tampal URL tersebut pada SIGMA_APPS_SCRIPT_URL di bawah.
-    4. Upload fail ini ke GitHub dan deploy melalui Vercel.
-  -->
 
-  <script>
-    /*****************************************************************
-     * TETAPAN UTAMA
-     * Letak URL Web App Apps Script SIGMA di sini.
-     * Contoh: https://script.google.com/macros/s/AKfycbxxxx/exec
-     *****************************************************************/
-    const SIGMA_APPS_SCRIPT_URL = 'https://script.google.com/a/macros/kpdn.gov.my/s/AKfycbyPth5SdgynV8lK6PP4rHj0P82c9-UZ7Y-hvIYOKedSNOsMhcOm_N6AZ3yGSXJIMSkStQ/exec';
-
-    // Paparan default: 'lapangan' atau 'admin'
-    const DEFAULT_MODE = 'lapangan';
-  </script>
-
-  <div class="shell">
-    <header class="topbar">
-      <div class="brand">
-        <h1>Sistem Integrasi Governan Maklumat</h1>
-        <div class="sub">SIGMA · KPDN Pulau Pinang</div>
-      </div>
-      <div class="nav">
-        <span id="statusPill" class="status-pill">Status: Menyemak konfigurasi</span>
-        <button id="btnLapangan" type="button" onclick="openSigma('lapangan')">Pegawai Lapangan</button>
-        <button id="btnAdmin" type="button" onclick="openSigma('admin')">Pentadbir</button>
-        <a id="openDirect" href="#" target="_blank" rel="noopener">Buka Penuh</a>
-      </div>
-    </header>
-
-    <main id="main" class="main">
-      <div id="notice" class="notice"></div>
-      <section id="setup" class="setup">
-        <div class="setup-card">
-          <h2>Konfigurasi belum lengkap</h2>
-          <p>Fail ini sudah sedia untuk GitHub dan Vercel, tetapi URL Web App Apps Script belum dimasukkan.</p>
-          <p>Buka <code>index.html</code>, cari baris ini dan gantikan dengan URL <code>/exec</code> Apps Script SIGMA:</p>
-          <pre>const SIGMA_APPS_SCRIPT_URL = 'PASTE_URL_APPS_SCRIPT_EXEC_DI_SINI';</pre>
-          <p>Selepas itu, deploy ke Vercel. Paparan Vercel akan memuatkan sistem asal melalui iframe, manakala struktur Apps Script + Google Sheet kekal digunakan.</p>
+  <header class="sigma-exec-header">
+    <div class="sigma-exec-inner">
+      <div class="sigma-brand-row">
+        <div class="sigma-brand-seal">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Coat_of_arms_of_Malaysia.svg/250px-Coat_of_arms_of_Malaysia.svg.png" alt="Jata Negara" style="width: 100%; height: 100%; object-fit: contain; padding: 5px;">
         </div>
-      </section>
+        <div class="sigma-brand-copy">
+          <div class="sigma-name">SIGMA</div>
+          <div class="sigma-full">SISTEM INTEGRASI GOVERNAN MAKLUMAT DAN AKTA</div>
+          <div class="sigma-branch">KPDN PULAU PINANG</div>
+        </div>
+      </div>
+      
+      <div class="sigma-user-card">
+        <span>PENGGUNA SEMASA</span>
+        <strong id="displayUser">pengguna.simulasi@kpdn.gov.my</strong>
+        <div class="role">PERANAN: <b id="displayRole">SUPER ADMIN</b></div>
+        
+        <div class="sigma-sim-box">
+          <label>Tukar Peranan Simulasi (RBAC)</label>
+          <select class="sigma-sim-select" onchange="app.setRole(this.value)">
+            <option value="SUPER ADMIN">👨‍💻 SUPER ADMIN</option>
+            <option value="ADMIN PERMIT">📋 ADMIN PERMIT</option>
+            <option value="ADMIN LESEN">📋 ADMIN LESEN</option>
+            <option value="PEGAWAI NAZIRAN - PERMIT">🕵️ PEGAWAI NAZIRAN - PERMIT</option>
+            <option value="PEGAWAI NAZIRAN - LESEN">🕵️ PEGAWAI NAZIRAN - LESEN</option>
+            <option value="PENGGUNA">📱 PENGGUNA (LAPANGAN SAHAJA)</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    
+    <nav class="sigma-exec-nav" id="mainNav">
+      <a data-target="home" onclick="app.navigate('home')">⌂ UTAMA</a>
+      <a data-target="lapangan" onclick="app.navigate('lapangan')">⌖ LAPANGAN</a>
+      <a data-target="naziran" onclick="app.navigate('naziran')">◉ NAZIRAN</a>
+      <a data-target="admin" onclick="app.navigate('admin')">⚙ PENTADBIR</a>
+    </nav>
+  </header>
 
-      <section id="frameWrap" class="frame-wrap">
-        <div id="loadingMask" class="loading-mask">Memuatkan SIGMA...</div>
-        <iframe id="sigmaFrame" title="SIGMA KPDN Pulau Pinang" allow="clipboard-read; clipboard-write; fullscreen" loading="eager"></iframe>
-      </section>
-    </main>
+  <div class="app-container">
+    <div id="toast-container"></div>
+    
+    <section id="view-home" class="view-section active">
+      <div class="card">
+        <div class="card-header">
+          <h2>Dashboard Keseluruhan</h2>
+          <span class="badge badge-info" id="homeScopeBadge">SKOP: SEMUA</span>
+        </div>
+        <div id="homeAlert" class="alert info">Menyegerakkan data dari pangkalan...</div>
+        <div class="kpi-grid" id="homeKpiContainer"></div>
+      </div>
+    </section>
+
+    <section id="view-lapangan" class="view-section">
+      <div id="lapSearchView">
+        <div class="card">
+          <div class="card-header">
+            <h2>Carian Lapangan Pintar</h2>
+            <span class="badge badge-warning" id="lapanganScopeBadge">SKOP: SEMUA</span>
+          </div>
+          <div id="lapSearchAlert" class="alert error" style="display:none;"></div>
+          
+          <div class="form-grid">
+            <div class="input-group">
+              <label class="required">Carian Syarikat / SSM</label>
+              <input type="text" id="lapSearchKey" placeholder="Cth: Mega Resources / 12345-A">
+            </div>
+            <div class="input-group">
+              <label>Alamat Syarikat</label>
+              <input type="text" id="lapSearchAlamat" placeholder="Cth: Georgetown">
+            </div>
+            <div class="input-group">
+              <label>Jenis Rekod</label>
+              <select id="lapSearchJenis">
+                <option value="SEMUA">SEMUA</option>
+                <option value="LESEN">LESEN</option>
+                <option value="PERMIT">PERMIT</option>
+              </select>
+            </div>
+          </div>
+          <div class="toolbar">
+            <button class="btn btn-primary" onclick="moduleLapangan.search()">Cari Rekod</button>
+            <button class="btn btn-outline" onclick="moduleLapangan.reset()">Padam</button>
+          </div>
+        </div>
+        
+        <div class="kpi-grid hidden" id="lapSummary">
+          <div class="kpi-card"><div class="kpi-label">Jumlah Syarikat (Unik)</div><div class="kpi-val" id="lapSumSyarikat">0</div></div>
+          <div class="kpi-card"><div class="kpi-label">Jumlah Cawangan / Rekod</div><div class="kpi-val" id="lapSumSsm">0</div></div>
+          <div class="kpi-card gold"><div class="kpi-label">Kategori Lesen</div><div class="kpi-val" id="lapSumLesen">0</div></div>
+          <div class="kpi-card gold"><div class="kpi-label">Kategori Permit</div><div class="kpi-val" id="lapSumPermit">0</div></div>
+        </div>
+
+        <div class="card">
+          <div class="card-header"><h2>Hasil Carian</h2></div>
+          <div class="table-container">
+            <table>
+              <thead><tr><th>Syarikat & SSM</th><th>Alamat Penuh</th><th>Jenis & Dokumen</th><th>Status & Baki Hari</th><th>Tindakan</th></tr></thead>
+              <tbody id="lapTableBody">
+                <tr><td colspan="5" style="text-align: center; color: var(--muted); padding: 30px;">Sila buat carian. Nama syarikat wajib diisi.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div id="lapDetailView" class="hidden">
+         <div class="card">
+            <div class="toolbar">
+               <button class="btn btn-outline" onclick="moduleLapangan.closeDetail()">← Kembali ke Carian</button>
+            </div>
+            
+            <div style="margin-bottom: 24px; padding: 20px; background: #f8fafc; border-radius: 14px; border: 1px solid var(--border);">
+               <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 10px;">
+                 <div>
+                   <h3 id="detCompName" style="margin: 0 0 8px 0; font-size: 22px; font-weight: 950; color: var(--primary);">Nama Syarikat</h3>
+                   <p style="margin: 4px 0;"><strong>SSM:</strong> <span id="detCompSsm">-</span></p>
+                 </div>
+                 <span class="badge badge-dark" id="detCompJenis" style="font-size: 12px; padding: 8px 12px;">Ibu Pejabat / Cawangan</span>
+               </div>
+               
+               <p style="margin: 12px 0 4px 0; display: flex; gap: 8px;"><strong style="min-width: 120px;">Alamat Premis:</strong> <span id="detCompAddr">-</span></p>
+               
+               <div style="margin-top: 16px; padding-top: 16px; border-top: 1px dashed #cbd5e1; display: flex; flex-wrap: wrap; gap: 24px;">
+                 <p style="margin: 0;"><strong>Pegawai Perhubungan:</strong> <br><span id="detCompPegawai" style="color: var(--primary); font-weight: 700;">-</span></p>
+                 <p style="margin: 0;"><strong>No. Telefon:</strong> <br><span id="detCompTel" style="color: var(--primary); font-weight: 700;">-</span></p>
+               </div>
+            </div>
+
+            <h2 style="font-size: 18px; color: var(--primary); margin-bottom: 16px; font-weight: 900;">Butiran Lesen atau Permit</h2>
+            <div id="detRecordsContainer"></div>
+         </div>
+      </div>
+    </section>
+
+    <section id="view-naziran" class="view-section">
+      <div class="kpi-grid" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));" id="naziranKpiContainer">
+        <div class="kpi-card"><div class="kpi-label">Jumlah Rekod</div><div class="kpi-val" id="kpiNzTotal">0</div></div>
+        <div class="kpi-card warning"><div class="kpi-label">Perlu Naziran</div><div class="kpi-val" id="kpiNzPerlu">0</div></div>
+        <div class="kpi-card green"><div class="kpi-label">Selesai Naziran</div><div class="kpi-val" id="kpiNzSelesai">0</div></div>
+        <div class="kpi-card danger"><div class="kpi-label">Jumlah Pengesyoran</div><div class="kpi-val" id="kpiNzPengesyoran">0</div></div>
+        <div class="kpi-card info admin-nz-kpi" style="display:none;"><div class="kpi-label">Jumlah Diluluskan</div><div class="kpi-val" id="kpiNzLulus">0</div></div>
+      </div>
+
+      <div class="card" id="nazSearchCard">
+        <div class="card-header">
+          <h2>Senarai Naziran Semasa</h2>
+          <span class="badge badge-warning" id="naziranScopeBadge">SKOP: SEMUA</span>
+        </div>
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>No Siri & Status Semasa</th>
+                <th>Syarikat & Maklumat</th>
+                <th>Tarikh Arahan Naziran</th>
+                <th>Tarikh Selesai Naziran</th>
+                <th style="width:180px">Tindakan</th>
+              </tr>
+            </thead>
+            <tbody id="nazTableBody">
+              <tr><td colspan="5" style="text-align: center; padding: 30px;">Memuatkan data...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="card" id="nazHistoryCard" style="display: none;">
+        <div class="card-header">
+          <h2>Sejarah Naziran</h2>
+          <span class="badge badge-dark">SELESAI / DIREKOD</span>
+        </div>
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>No Siri & Kategori</th>
+                <th>Syarikat & Maklumat</th>
+                <th>Tarikh Selesai Naziran</th>
+                <th>Keputusan Pentadbir</th>
+                <th style="width:120px">Tindakan</th>
+              </tr>
+            </thead>
+            <tbody id="nazHistoryTableBody">
+              <tr><td colspan="5" style="text-align: center; padding: 30px;">Memuatkan data...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="card" id="naziranFormCard" style="display: none;">
+        <div class="card-header">
+          <h2 id="nazFormTitle">Rekod Naziran Baharu</h2>
+          <span class="badge badge-info" id="nazFormMode">BARU</span>
+        </div>
+        <form id="nazForm">
+          <input type="hidden" name="ID_NAZIRAN" id="naz_ID_NAZIRAN">
+          <input type="hidden" name="NO_SIRI" id="naz_NO_SIRI">
+
+          <div class="form-section">
+            <h3>1. Maklumat Kawalan Rekod</h3>
+            <div class="form-grid">
+              <div class="input-group"><label>Jenis Permohonan</label><select name="JENIS_NAZIRAN" id="naz_JENIS_NAZIRAN" required><option value="">Pilih</option><option value="LESEN">LESEN</option><option value="PERMIT">PERMIT</option></select></div>
+              <div class="input-group"><label>Kategori Naziran</label><select name="KATEGORI_NAZIRAN" id="naz_KATEGORI_NAZIRAN" onchange="moduleNaziran.toggleKategoriPindaan(this.value)" required><option value="NAZIRAN BAHARU">NAZIRAN BAHARU</option><option value="NAZIRAN PINDAAN">NAZIRAN PINDAAN</option></select></div>
+              <div class="input-group"><label>Status Tindakan Naziran</label><select name="STATUS_NAZIRAN" id="naz_STATUS_NAZIRAN" required><option value="SELESAI NAZIRAN">SELESAI NAZIRAN</option><option value="TINDAKAN - PENGESYORAN">TINDAKAN - PENGESYORAN</option><option value="TINDAKAN - PINDAAN">TINDAKAN - PINDAAN</option></select></div>
+              <div class="input-group"><label>Tarikh Naziran Dilakukan</label><input type="date" name="TARIKH_SELESAI" id="naz_TARIKH_SELESAI" required></div>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <h3>2. Maklumat Premis</h3>
+            <div class="form-grid">
+              <div class="input-group span-2"><label>Nama Syarikat</label><input name="NAMA_SYARIKAT" id="naz_NAMA_SYARIKAT" required></div>
+              <div class="input-group"><label>No SSM</label><input name="NO_SSM" id="naz_NO_SSM"></div>
+              <div class="input-group"><label>Tarikh Mula Niaga</label><input type="date" name="TARIKH_MULA_NIAGA"></div>
+              <div class="input-group span-2"><label>Alamat Perniagaan</label><textarea name="ALAMAT_PERNIAGAAN" id="naz_ALAMAT_PERNIAGAAN"></textarea></div>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <h3>3. Maklumat Lesen / Permit Semasa</h3>
+            <div class="form-grid">
+              <div class="input-group"><label>Lesen/Permit Dipamerkan?</label><select name="LESEN_DIPAMERKAN"><option value="">Pilih</option><option>YA</option><option>TIDAK</option><option>TIDAK BERKAITAN</option></select></div>
+              <div class="input-group"><label>Jenis Perniagaan</label><select name="JENIS_PERNIAGAAN"><option value="">Pilih</option><option>MENGILANG</option><option>PEMBORONG</option><option>PERUNCIT</option></select></div>
+              <div class="input-group"><label>No Lesen / Permit (Jika ada)</label><input name="NO_LESEN" id="naz_NO_LESEN"></div>
+              <div class="input-group"><label>No PDA</label><input name="NO_PDA" id="naz_NO_PDA"></div>
+              <div class="input-group span-2"><label>Jika Tidak Berniaga, Nyatakan Sebab</label><textarea name="SEBAB_TIDAK_BERNIAGA" id="naz_SEBAB_TIDAK_BERNIAGA"></textarea></div>
+            </div>
+            
+            <div style="margin-top: 16px; border: 1px solid var(--border); border-radius: 12px; padding: 14px; background: #fff;">
+               <h4 style="margin: 0 0 10px; font-size: 12px; color: var(--primary); font-weight: 800; text-transform: uppercase;">Senarai Barang Kawalan</h4>
+               <div class="table-container" style="box-shadow: none; border-radius: 8px;">
+                 <table>
+                   <thead><tr><th>Jenis Barang Kawalan</th><th>Kuantiti</th><th>Ukuran</th><th style="width: 130px; text-align:center;">Tindakan</th></tr></thead>
+                   <tbody id="nzBarangTbody"></tbody>
+                 </table>
+               </div>
+               <button type="button" class="btn btn-outline btn-small pegawai-save-btn" style="margin-top: 10px;" onclick="moduleNaziran.addBarangRow()">+ Tambah Barang Kawalan</button>
+            </div>
+          </div>
+          
+          <div class="form-section">
+            <h3>4. Temu Duga dan Bekalan</h3>
+            <div class="form-grid">
+              <div class="input-group"><label>Nama Orang Ditemuduga</label><input name="NAMA_ORANG" placeholder="Contoh: Ali bin Abu"></div>
+              <div class="input-group"><label>Jawatan</label><input name="JAWATAN_ORANG" placeholder="Contoh: Pengurus"></div>
+            </div>
+
+            <div style="margin-top: 16px; border: 1px solid var(--border); border-radius: 12px; padding: 14px; background: #fff;">
+               <h4 style="margin: 0 0 10px; font-size: 12px; color: var(--primary); font-weight: 800; text-transform: uppercase;">Maklumat Pembekalan</h4>
+               <div class="table-container" style="box-shadow: none; border-radius: 8px; overflow-x: auto;">
+                 <table style="min-width: 800px;">
+                   <thead><tr><th>Nama Pembekal</th><th>Alamat Pembekal</th><th>Jenis Barang Kawalan</th><th style="width: 110px;">Kekerapan</th><th style="width: 100px;">Purata Pembelian</th><th style="width: 80px;">Ukuran</th><th style="width: 130px; text-align:center;">Tindakan</th></tr></thead>
+                   <tbody id="nzPembekalTbody"></tbody>
+                 </table>
+               </div>
+               <button type="button" class="btn btn-outline btn-small pegawai-save-btn" style="margin-top: 10px;" onclick="moduleNaziran.addPembekalRow()">+ Tambah Maklumat Pembekalan</button>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <h3>5. Pelanggan, Stor dan Pengedaran</h3>
+            <div style="margin-bottom: 16px; border: 1px solid var(--border); border-radius: 12px; padding: 14px; background: #fff;">
+               <h4 style="margin: 0 0 10px; font-size: 12px; color: var(--primary); font-weight: 800; text-transform: uppercase;">Maklumat Pelanggan</h4>
+               <div class="table-container" style="box-shadow: none; border-radius: 8px; overflow-x: auto;">
+                 <table style="min-width: 700px;">
+                   <thead><tr><th>Kategori Pelanggan</th><th>Lokasi Pelanggan</th><th>Jenis Barang Kawalan</th><th style="width: 90px;">Ukuran</th><th style="width: 110px;">Jumlah Pelanggan</th><th style="width: 130px; text-align:center;">Tindakan</th></tr></thead>
+                   <tbody id="nzPelangganTbody"></tbody>
+                 </table>
+               </div>
+               <button type="button" class="btn btn-outline btn-small pegawai-save-btn" style="margin-top: 10px;" onclick="moduleNaziran.addPelangganRow()">+ Tambah Maklumat Pelanggan</button>
+            </div>
+
+            <div style="margin-bottom: 16px; border: 1px solid var(--border); border-radius: 12px; padding: 14px; background: #fff;">
+               <h4 style="margin: 0 0 10px; font-size: 12px; color: var(--primary); font-weight: 800; text-transform: uppercase;">Maklumat Stor</h4>
+               <div class="table-container" style="box-shadow: none; border-radius: 8px;">
+                 <table>
+                   <thead><tr><th>Jenis Barang Kawalan</th><th>Kuantiti Semasa</th><th style="width: 90px;">Ukuran</th><th style="width: 130px; text-align:center;">Tindakan</th></tr></thead>
+                   <tbody id="nzStorTbody"></tbody>
+                 </table>
+               </div>
+               <button type="button" class="btn btn-outline btn-small pegawai-save-btn" style="margin-top: 10px;" onclick="moduleNaziran.addStorRow()">+ Tambah Maklumat Stor</button>
+            </div>
+
+            <div style="border: 1px solid var(--border); border-radius: 12px; padding: 14px; background: #fff;">
+               <h4 style="margin: 0 0 10px; font-size: 12px; color: var(--primary); font-weight: 800; text-transform: uppercase;">Maklumat Pengedaran</h4>
+               <div class="table-container" style="box-shadow: none; border-radius: 8px;">
+                 <table>
+                   <thead><tr><th>Kemudahan Pengangkutan</th><th>Cara Pengedaran</th><th style="width: 130px; text-align:center;">Tindakan</th></tr></thead>
+                   <tbody id="nzPengedaranTbody"></tbody>
+                 </table>
+               </div>
+               <button type="button" class="btn btn-outline btn-small pegawai-save-btn" style="margin-top: 10px;" onclick="moduleNaziran.addPengedaranRow()">+ Tambah Maklumat Pengedaran</button>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <h3>6. Pemerhatian, Pegawai dan Lokasi</h3>
+            <div class="form-grid">
+               <div class="input-group span-2">
+                 <div style="display: flex; justify-content: space-between; align-items: flex-end;">
+                   <label>Pemerhatian dan Ulasan</label>
+                   <button type="button" class="btn btn-ai btn-small pegawai-save-btn" onclick="moduleAI.janaUlasan()">✨ Jana Ulasan AI</button>
+                 </div>
+                 <textarea name="ULASAN" id="naz_ULASAN" placeholder="Nyatakan dapatan naziran secara terperinci..."></textarea>
+               </div>
+               <div class="input-group span-2"><label>Catatan Pemerhatian</label><select name="CATATAN_PEMERHATIAN" id="naz_CATATAN_PEMERHATIAN"><option value="">Pilih</option><option value="DISYORKAN KELULUSAN">DISYORKAN KELULUSAN</option><option value="NAZIRAN ULANGAN">NAZIRAN ULANGAN</option><option value="GAGAL">GAGAL</option></select></div>
+               <div class="input-group span-2"><label>Emel Pegawai Menjalankan Naziran</label><input name="EMEL_PEGAWAI" id="naz_EMEL_PEGAWAI" readonly></div>
+               <div class="input-group"><label>Nama Penuh Pegawai</label><input name="NAMA_PEGAWAI"></div>
+               <div class="input-group"><label>Jawatan Penuh</label><input name="JAWATAN_PEGAWAI"></div>
+               <div class="input-group">
+                 <label>Kategori Lokasi</label>
+                 <select id="kategori_lokasi" onchange="moduleNaziran.toggleLokasi(this.value)">
+                   <option value="MANUAL">MANUAL</option>
+                   <option value="AUTO">AUTO (GPS)</option>
+                 </select>
+               </div>
+               <div class="input-group" style="justify-content: flex-end;">
+                 <button type="button" id="btnLokasiGps" class="btn btn-outline pegawai-save-btn" style="display:none; margin-top: 18px;" onclick="moduleNaziran.getLokasiGPS()">📍 LOKASI GPS</button>
+               </div>
+               <div class="input-group"><label>Latitude</label><input name="LATITUDE" id="naz_LATITUDE" placeholder="Contoh: 5.4141"></div>
+               <div class="input-group"><label>Longitude</label><input name="LONGITUDE" id="naz_LONGITUDE" placeholder="Contoh: 100.3288"></div>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <h3>7. Dokumen Sokongan (Muat Naik)</h3>
+            <div class="image-actions">
+              <button type="button" class="btn btn-outline btn-small pegawai-save-btn" onclick="showToast('Simulasi: Fungsi muat naik gambar berfungsi sepenuhnya di backend asal.')">📷 Muat Naik Gambar Premis</button>
+            </div>
+            <div class="text-sm-muted">Simulasi: Gambar akan dihantar ke folder Google Drive syarikat secara automatik.</div>
+          </div>
+
+          <div class="form-section admin-only-section" id="sectionUlasanAdmin" style="display: none; border: 2px solid var(--info); background: #f0f7ff;">
+            <h3 style="color: var(--primary);">8. Ulasan dan Kelulusan Pentadbir</h3>
+            <div class="form-grid">
+               <div class="input-group span-2">
+                 <label>Ulasan / Komen Pentadbir</label>
+                 <textarea id="admin_ulasan_text" placeholder="Masukkan catatan atau ulasan sebelum meluluskan/menolak..."></textarea>
+               </div>
+            </div>
+            <div class="form-footer" style="background: transparent; border-top: 0; padding-top: 10px;">
+              <button type="button" class="btn btn-danger" onclick="moduleNaziran.saveAdminUlasan('TIDAK DILULUSKAN')">❌ TIDAK DILULUSKAN</button>
+              <button type="button" class="btn btn-success" onclick="moduleNaziran.saveAdminUlasan('DILULUSKAN')">✅ DILULUSKAN</button>
+            </div>
+          </div>
+
+          <div class="form-footer pegawai-save-btn" style="margin-top: 24px;">
+            <button type="button" class="btn btn-outline" onclick="moduleNaziran.closeForm()">Batal</button>
+            <button type="button" class="btn btn-success" onclick="moduleNaziran.saveForm()">Simpan & Hantar Naziran</button>
+          </div>
+
+          <div class="form-footer admin-only-section" id="adminCancelBtn" style="display: none; margin-top: 24px;">
+            <button type="button" class="btn btn-outline" onclick="moduleNaziran.closeForm()">← Kembali</button>
+            <button type="button" class="btn btn-info" onclick="window.print()">🖨️ Cetak</button>
+            <button type="button" class="btn btn-gold" onclick="moduleNaziran.muatTurunPDF()">⬇️ Muat Turun</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <div id="ai-chat-widget">
+      <div id="ai-chat-window">
+        <div id="ai-chat-header">
+          <div>✨ Pembantu AI SIGMA</div>
+          <div id="ai-chat-close" onclick="moduleAI.toggleChat()">✖</div>
+        </div>
+        <div id="ai-chat-body">
+          <div class="ai-msg bot">Hai! Saya pembantu AI SIGMA. Ada apa-apa soalan mengenai akta, prosedur naziran, atau sistem ini?</div>
+        </div>
+        <div id="ai-chat-input-area">
+          <input type="text" id="ai-chat-input" placeholder="Tanya sesuatu..." onkeypress="if(event.key === 'Enter') moduleAI.sendMessage()">
+          <button id="ai-chat-send" onclick="moduleAI.sendMessage()">➤</button>
+        </div>
+      </div>
+      <div id="ai-chat-btn" onclick="moduleAI.toggleChat()">🤖</div>
+    </div>
+
+    <section id="view-admin" class="view-section">
+      <div class="card" style="margin-bottom: 16px;">
+         <div class="card-header">
+           <h2>Panel Pentadbir Utama (SUPER ADMIN)</h2>
+           <span class="badge badge-dark" id="adminScopeBadge">SKOP: SEMUA</span>
+         </div>
+         <p class="text-sm-muted" style="margin: 0 0 16px;">Akses terhad untuk pengurusan data master, pengguna, dan notifikasi sistem.</p>
+         
+         <div class="toolbar" style="margin-bottom: 0;">
+            <button class="btn btn-primary" onclick="moduleAdmin.switchTab('admin-dashboard', this)">Dashboard</button>
+            <button class="btn btn-outline" onclick="moduleAdmin.switchTab('admin-kelulusan', this)">Lesen / Permit</button>
+            <button class="btn btn-outline" onclick="moduleAdmin.switchTab('admin-syarikat', this)">Senarai Syarikat</button>
+            <button class="btn btn-outline" onclick="moduleAdmin.switchTab('admin-emel', this)">Notifikasi Emel</button>
+            <button class="btn btn-outline" onclick="moduleAdmin.switchTab('admin-pegawai', this)">Tetapan Pegawai</button>
+         </div>
+      </div>
+
+      <div id="admin-dashboard" class="admin-tab-content">
+        <div class="kpi-grid">
+           <div class="kpi-card info"><div class="kpi-label">Jumlah Syarikat (Unik)</div><div class="kpi-val" id="admKpiUtamaSyarikat">0</div></div>
+           <div class="kpi-card info"><div class="kpi-label">Jumlah Kelulusan</div><div class="kpi-val" id="admKpiUtamaKelulusan">0</div></div>
+           <div class="kpi-card gold"><div class="kpi-label">Jumlah Lesen & Permit</div><div class="kpi-val" id="admKpiUtamaDokumen">0</div></div>
+           <div class="kpi-card"><div class="kpi-label">Jumlah Lesen</div><div class="kpi-val" id="admKpiUtamaLesen">0</div></div>
+           <div class="kpi-card green"><div class="kpi-label">Lesen Aktif</div><div class="kpi-val" id="admKpiUtamaLesenAktif">0</div></div>
+           <div class="kpi-card"><div class="kpi-label">Jumlah Permit</div><div class="kpi-val" id="admKpiUtamaPermit">0</div></div>
+           <div class="kpi-card green"><div class="kpi-label">Permit Aktif</div><div class="kpi-val" id="admKpiUtamaPermitAktif">0</div></div>
+           <div class="kpi-card danger"><div class="kpi-label">Permit Tamat</div><div class="kpi-val" id="admKpiUtamaPermitTamat">0</div></div>
+        </div>
+      </div>
+
+      <div id="admin-kelulusan" class="admin-tab-content" style="display:none;">
+        <div id="admKelSearchCard" class="card">
+          <div class="card-header">
+            <h2>Carian Lesen / Permit</h2>
+            <button class="btn btn-gold btn-small" onclick="moduleAdmin.showKelulusanForm()">+ Tambah Rekod</button>
+          </div>
+          <div class="form-grid">
+            <div class="input-group"><label>Kata Kunci</label><input type="text" id="admKelSearchKey" placeholder="Nama syarikat / No SSM"></div>
+            <div class="input-group"><label>Alamat</label><input type="text" id="admKelSearchAlamat" placeholder="Daerah / Negeri"></div>
+            <div class="input-group"><label>Status</label><select id="admKelSearchStatus"><option value="SEMUA">SEMUA</option><option value="AKTIF">AKTIF</option><option value="HAMPIR TAMAT">HAMPIR TAMAT</option><option value="TAMAT">TAMAT</option></select></div>
+            <div class="input-group"><label>Jenis Rekod</label><select id="admKelSearchJenis"><option value="SEMUA">SEMUA</option><option value="LESEN">LESEN</option><option value="PERMIT">PERMIT</option></select></div>
+          </div>
+          <div class="toolbar">
+            <button class="btn btn-primary" onclick="moduleAdmin.searchKelulusan()">Cari Rekod</button>
+            <button class="btn btn-outline" onclick="moduleAdmin.resetKelulusan()">Reset</button>
+            <div class="input-group" style="flex-direction: row; align-items: center; gap: 8px; margin-left: auto;">
+              <label style="margin:0; font-size: 12px; color: var(--muted);">Papar:</label>
+              <select id="admKelLimit" onchange="moduleAdmin.searchKelulusan()" style="padding: 6px; height: auto; min-width: 65px; border-radius: 8px;">
+                <option value="20">20</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+              </select>
+            </div>
+          </div>
+          <div class="table-container">
+            <table>
+              <thead><tr><th>Tindakan</th><th>Syarikat & Maklumat</th><th>Jenis / No Dokumen</th><th>Tarikh Tamat</th><th>Status</th></tr></thead>
+              <tbody id="admKelTableBody"><tr><td colspan="5" style="text-align:center; padding: 20px;">Sila klik 'Cari Rekod' untuk memaparkan senarai.</td></tr></tbody>
+            </table>
+          </div>
+          <div id="admKelPagination" style="display:none; justify-content: flex-end; align-items: center; gap: 12px; margin-top: 16px;">
+            <button class="btn btn-outline btn-small" onclick="moduleAdmin.changeKelPage(-1)">← Sebelumnya</button>
+            <span id="admKelPageInfo" style="font-weight:800; font-size:12px; color: var(--primary);">Muka 1 / 1</span>
+            <button class="btn btn-outline btn-small" onclick="moduleAdmin.changeKelPage(1)">Seterusnya →</button>
+          </div>
+        </div>
+
+        <div class="card" id="admKelFormCard" style="display:none;">
+          <div class="card-header"><h2 id="admKelFormTitle">Pendaftaran Lesen / Permit Baharu</h2></div>
+          <div class="form-grid">
+            <div class="input-group span-2"><label>Nama Syarikat</label><input type="text" id="admKelNamaSyarikat"></div>
+            <div class="input-group span-2"><label>Alamat</label><textarea id="admKelAlamat"></textarea></div>
+            <div class="input-group"><label>No SSM</label><input type="text" id="admKelNoSsm"></div>
+            <div class="input-group"><label>No Dokumen</label><input type="text" id="admKelNoDokumen"></div>
+            <div class="input-group"><label>No Siri</label><input type="text" id="admKelNoSiri"></div>
+            <div class="input-group"><label>Jenis Dokumen</label><select id="admKelJenisDokumen"><option value="LESEN">LESEN</option><option value="PERMIT">PERMIT</option></select></div>
+            <div class="input-group"><label>Jenis Permohonan</label><input type="text" id="admKelJenisPermohonan" placeholder="Cth: BAHARU / PEMBAHARUAN"></div>
+            <div class="input-group"><label>Tarikh Mula Tempoh Sah</label><input type="date" id="admKelTarikhMula"></div>
+            <div class="input-group"><label>Tarikh Tamat Tempoh Sah</label><input type="date" id="admKelTarikhTamat"></div>
+            <div class="input-group span-2"><label>Catatan</label><textarea id="admKelCatatan"></textarea></div>
+          </div>
+
+          <div style="margin-top: 16px; border: 1px solid var(--border); border-radius: 12px; padding: 14px; background: #fff;">
+            <h4 style="margin: 0 0 10px; font-size: 12px; color: var(--primary); font-weight: 800; text-transform: uppercase;">Senarai Barang Kawalan</h4>
+            <div class="table-container" style="box-shadow: none; border-radius: 8px; overflow-x: auto;">
+              <table style="min-width: 600px;">
+                <thead><tr><th>Jenis Barang Kawalan</th><th>Kuantiti</th><th>Ukuran</th><th>Catatan</th><th style="width: 60px; text-align:center;">Tindakan</th></tr></thead>
+                <tbody id="admKelBarangTbody"></tbody>
+              </table>
+            </div>
+            <button type="button" class="btn btn-outline btn-small" style="margin-top: 10px;" onclick="moduleAdmin.addKelBarangRow()">+ Tambah Barang</button>
+          </div>
+
+          <div style="margin-top: 16px; border: 1px solid var(--border); border-radius: 12px; padding: 14px; background: #fff;">
+            <h4 style="margin: 0 0 10px; font-size: 12px; color: var(--primary); font-weight: 800; text-transform: uppercase;">Senarai Pembekal</h4>
+            <div class="table-container" style="box-shadow: none; border-radius: 8px; overflow-x: auto;">
+              <table style="min-width: 800px;">
+                <thead><tr><th>Nama Syarikat</th><th>No SSM</th><th>Alamat</th><th>Kategori</th><th>Jenis Barang Kawalan</th><th style="width: 60px; text-align:center;">Tindakan</th></tr></thead>
+                <tbody id="admKelPembekalTbody"></tbody>
+              </table>
+            </div>
+            <button type="button" class="btn btn-outline btn-small" style="margin-top: 10px;" onclick="moduleAdmin.addKelPembekalRow()">+ Tambah Pembekal</button>
+          </div>
+
+          <div class="toolbar" style="margin-top:20px;">
+             <button class="btn btn-success" onclick="moduleAdmin.saveKelulusan()">Simpan Rekod</button>
+             <button class="btn btn-outline" onclick="moduleAdmin.hideKelulusanForm()">Batal</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="admin-syarikat" class="admin-tab-content" style="display:none;">
+        <div class="kpi-grid" style="margin-bottom: 16px;">
+           <div class="kpi-card info"><div class="kpi-label">Jumlah Syarikat</div><div class="kpi-val" id="admKpiSyarikat">1250</div></div>
+           <div class="kpi-card green"><div class="kpi-label">Jumlah Aktif</div><div class="kpi-val" id="admKpiAktif">1200</div></div>
+           <div class="kpi-card danger"><div class="kpi-label">Jumlah Tidak Aktif</div><div class="kpi-val" id="admKpiTakAktif">50</div></div>
+        </div>
+
+        <div class="card" id="admSySearchCard">
+          <div class="card-header"><h2>Senarai Syarikat</h2></div>
+          <div class="form-grid">
+             <div class="input-group"><label class="required">Nama Syarikat</label><input type="text" id="admSySearchNama" placeholder="Kosongkan untuk cari semua"></div>
+             <div class="input-group"><label>Alamat</label><input type="text" id="admSySearchAlamat" placeholder="Cth: Georgetown"></div>
+             <div class="input-group"><label>Kategori</label><select id="admSySearchKat"><option value="SEMUA">SEMUA</option><option value="LESEN">LESEN</option><option value="PERMIT">PERMIT</option></select></div>
+          </div>
+          <div class="toolbar">
+            <button class="btn btn-primary" onclick="moduleAdmin.searchSyarikat()">Cari Syarikat</button>
+            <button class="btn btn-outline" onclick="moduleAdmin.resetSyarikat()">Reset</button>
+            <button class="btn btn-gold" onclick="moduleAdmin.showSyarikatForm()">+ Tambah Syarikat</button>
+          </div>
+          <div class="table-container">
+            <table>
+              <thead><tr><th>Tindakan</th><th>Nama Syarikat</th><th>SSM</th><th>Pegawai / Telefon</th><th>Sektor Terlibat</th><th>Status</th></tr></thead>
+              <tbody id="admSyarikatBody">
+                <tr><td colspan="6" style="text-align:center; padding: 20px;">Sila tekan Cari Syarikat untuk papar senarai.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="card" id="admSyFormCard" style="display:none;">
+          <div class="card-header"><h2 id="admSyFormTitle">Pendaftaran Syarikat Baharu</h2></div>
+          <div class="form-grid">
+            <div class="input-group span-2"><label>Nama Syarikat</label><input type="text" id="admSyFormNama"></div>
+            <div class="input-group span-2"><label>Alamat Syarikat</label><textarea id="admSyFormAlamat"></textarea></div>
+            <div class="input-group"><label>No SSM</label><input type="text" id="admSyFormSsm"></div>
+            <div class="input-group"><label>Ada Cawangan?</label><select id="admSyFormCawangan"><option>TIDAK</option><option>YA</option></select></div>
+            <div class="input-group"><label>Sektor Terlibat</label><input type="text" id="admSyFormSektor" placeholder="Cth: Runcit / Borong"></div>
+            <div class="input-group"><label>Nama Pegawai Perhubungan</label><input type="text" id="admSyFormPegawai"></div>
+            <div class="input-group"><label>No Telefon</label><input type="text" id="admSyFormTel"></div>
+            <div class="input-group"><label>Emel Syarikat</label><input type="email" id="admSyFormEmel"></div>
+            <div class="input-group"><label>Status</label><select id="admSyFormStatus"><option>AKTIF</option><option>TIDAK AKTIF</option></select></div>
+          </div>
+          <div class="toolbar" style="margin-top:20px;">
+             <button class="btn btn-success" onclick="moduleAdmin.saveSyarikat()">Simpan Syarikat</button>
+             <button class="btn btn-outline" onclick="moduleAdmin.hideSyarikatForm()">Batal</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="admin-emel" class="admin-tab-content" style="display:none;">
+        <div class="kpi-grid" style="margin-bottom: 16px;">
+           <div class="kpi-card info"><div class="kpi-label">Jumlah Pemilik Skop</div><div class="kpi-val" id="admKpiEmelJumlah">0</div></div>
+           <div class="kpi-card warning"><div class="kpi-label">Hampir Tamat Tempoh</div><div class="kpi-val" id="admKpiEmelHampir">0</div></div>
+           <div class="kpi-card danger"><div class="kpi-label">Tamat Tempoh</div><div class="kpi-val" id="admKpiEmelTamat">0</div></div>
+        </div>
+
+        <div class="card">
+          <div class="card-header"><h2>Tetapan Notifikasi Emel</h2></div>
+          <p class="text-sm-muted" style="margin-bottom: 16px;">Tetapan ini mengawal emel peringatan tamat tempoh.</p>
+          <div class="form-grid">
+            <div class="input-group"><label>Hari Amaran Emel</label><input type="text" value="90,60,30,14,7"></div>
+            <div class="input-group"><label>Hantar Jika Tamat Tempoh</label><select><option>YA</option><option>TIDAK</option></select></div>
+            <div class="input-group"><label>Jam Notifikasi Harian</label><input type="number" value="8"></div>
+            <div class="input-group"><label>Had Emel Sekali Jalan</label><input type="number" value="50"></div>
+            <div class="input-group span-2"><label>Subjek Emel</label><input type="text" value="Peringatan Tamat Tempoh [JENIS_REKOD] Barang Kawalan - [NAMA_SYARIKAT]"></div>
+          </div>
+          <div class="toolbar">
+             <button class="btn btn-success" onclick="showToast('Tetapan emel berjaya disimpan (Simulasi)')">Simpan Tetapan Emel</button>
+             <button class="btn btn-outline" style="color:var(--info); border-color:var(--info);">Pasang Trigger Harian</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header"><h2>Carian Calon Emel Tamat Tempoh</h2></div>
+          <div class="form-grid">
+            <div class="input-group"><label>Kata Kunci</label><input type="text" placeholder="Syarikat / SSM / Emel"></div>
+            <div class="input-group"><label>Status Dokumen</label><select><option>SEMUA</option><option>HAMPIR TAMAT</option><option>TAMAT</option></select></div>
+            <div class="input-group"><label>Status Emel</label><select><option>SEMUA</option><option>ADA EMEL</option><option>TIADA EMEL</option></select></div>
+          </div>
+          <div class="toolbar">
+             <button class="btn btn-primary" onclick="showToast('Mencari calon emel...')">Cari Calon</button>
+             <button class="btn btn-success" onclick="showToast('Menghantar emel kelompok...')">Hantar Emel Kelompok</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="admin-pegawai" class="admin-tab-content" style="display:none;">
+        <div class="card">
+          <div class="card-header"><h2>Tetapan Pegawai</h2></div>
+          <div class="form-grid">
+            <div class="input-group"><label>Nama Pegawai</label><input type="text" placeholder="Nama Penuh"></div>
+            <div class="input-group"><label>Jawatan</label><input type="text" placeholder="Contoh: Pegawai Penguatkuasa"></div>
+            <div class="input-group"><label>No. Telefon Bimbit</label><input type="text" placeholder="01x-xxxxxxx"></div>
+            <div class="input-group"><label>Emel</label><input type="email" placeholder="nama@kpdn.gov.my"></div>
+            <div class="input-group">
+               <label>Peranan</label>
+               <select>
+                 <option>SUPER ADMIN</option>
+                 <option>ADMIN PERMIT</option>
+                 <option>ADMIN LESEN</option>
+                 <option>PEGAWAI NAZIRAN - PERMIT</option>
+                 <option>PEGAWAI NAZIRAN - LESEN</option>
+                 <option>PENGGUNA</option>
+               </select>
+            </div>
+            <div class="input-group"><label>Status</label><select><option>AKTIF</option><option>TIDAK AKTIF</option></select></div>
+          </div>
+          <div class="toolbar">
+             <button class="btn btn-success" onclick="showToast('Rekod pegawai berjaya disimpan (Simulasi)')">Simpan Pegawai</button>
+             <button class="btn btn-outline">Reset Borang</button>
+          </div>
+          <div class="table-container" style="margin-top: 16px;">
+             <table>
+                <thead><tr><th>Tindakan</th><th>Nama / Jawatan</th><th>Emel</th><th>Peranan</th><th>Status</th></tr></thead>
+                <tbody>
+                   <tr>
+                      <td>
+                         <button class="btn btn-small btn-outline">Edit</button>
+                         <button class="btn btn-small btn-danger" style="margin-top:4px;">Nyahaktif</button>
+                      </td>
+                      <td><b>Ali Bin Abu</b><br><span class="text-sm-muted">Pegawai Penguatkuasa</span></td>
+                      <td>ali@kpdn.gov.my</td>
+                      <td>SUPER ADMIN</td>
+                      <td><span class="badge badge-aktif">AKTIF</span></td>
+                   </tr>
+                </tbody>
+             </table>
+          </div>
+        </div>
+      </div>
+    </section>
   </div>
 
   <script>
-    function isConfigured(){
-      return SIGMA_APPS_SCRIPT_URL && !SIGMA_APPS_SCRIPT_URL.includes('PASTE_URL_APPS_SCRIPT_EXEC_DI_SINI');
+    function showToast(message, type = 'info') {
+        const container = document.getElementById('toast-container');
+        if(!container) return;
+        const toast = document.createElement('div');
+        toast.className = 'toast-msg';
+        toast.style.cssText += type === 'error' ? 'background: #b91c1c;' : (type === 'success' ? 'background: #0f766e;' : '');
+        toast.textContent = message;
+        container.appendChild(toast);
+        setTimeout(() => { toast.style.opacity = '1'; toast.style.transform = 'translateY(0)'; }, 10);
+        setTimeout(() => {
+            toast.style.opacity = '0';
+            toast.style.transform = 'translateY(20px)';
+            setTimeout(() => toast.remove(), 300);
+        }, 3000);
     }
 
-    function cleanBaseUrl(){
-      return String(SIGMA_APPS_SCRIPT_URL || '').trim().replace(/\?+$/,'');
-    }
+    const DB = {
+      kelulusan: [
+        { id: 'R001', syarikat: 'MEGA RESOURCES SDN BHD', ssm: '12345-A', jenisSyarikat: 'Ibu Pejabat', alamat: 'Cawangan Georgetown, 123 Jln Maju, 10000 Pulau Pinang', alamatSimpanan: 'Gudang Utama, 125 Jln Maju, 10000 Pulau Pinang', jenis: 'LESEN', dokumen: 'L-1001', status: 'AKTIF', kemaskini: '18/07/2026', tarikhTamat: '31/12/2026', hariBaki: 165, barang: 'Minyak Masak', kuantiti: '500 KG', pembekal: '-', pegawai: 'Ali Bin Abu', telefon: '012-3334441' },
+        { id: 'R002', syarikat: 'MEGA RESOURCES SDN BHD', ssm: '12345-A', jenisSyarikat: 'Cawangan', alamat: 'Cawangan Bayan Lepas, 45 Jln Industri, 11900 Pulau Pinang', alamatSimpanan: 'Sama seperti alamat premis', jenis: 'PERMIT', dokumen: 'P-2001', status: 'AKTIF', kemaskini: '15/07/2026', tarikhTamat: '31/12/2026', hariBaki: 165, barang: 'Gula', kuantiti: '1000 KG', pembekal: 'Gula Prai Bhd', pegawai: 'Abu Bakar', telefon: '012-3334442' },
+        { id: 'R003', syarikat: 'MEGA RESOURCES SDN BHD', ssm: '12345-A', jenisSyarikat: 'Cawangan', alamat: 'Cawangan Butterworth, 78 Jln Pantai, 12000 Pulau Pinang', alamatSimpanan: 'Sama seperti alamat premis', jenis: 'LESEN', dokumen: 'L-1002', status: 'AKTIF', kemaskini: '10/07/2026', tarikhTamat: '15/10/2026', hariBaki: 88, barang: 'Tepung', kuantiti: '200 KG', pembekal: '-', pegawai: 'Ahmad Albab', telefon: '012-3334443' },
+        { id: 'R004', syarikat: 'MEGA RESOURCES SDN BHD', ssm: '12345-A', jenisSyarikat: 'Cawangan', alamat: 'Cawangan Perai, 12 Lrg Perusahaan, 13600 Pulau Pinang', alamatSimpanan: 'Gudang Perai, 14 Lrg Perusahaan, 13600 Pulau Pinang', jenis: 'PERMIT', dokumen: 'P-2002', status: 'AKTIF', kemaskini: '01/06/2026', tarikhTamat: '01/01/2027', hariBaki: 166, barang: 'Minyak Masak', kuantiti: '5000 KG', pembekal: 'Sime Darby Oils', pegawai: 'Muthusamy', telefon: '012-3334444' },
+        { id: 'R005', syarikat: 'MEGA RESOURCES SDN BHD', ssm: '12345-A', jenisSyarikat: 'Cawangan', alamat: 'Cawangan Nibong Tebal, 90 Jln Besar, 14300 Pulau Pinang', alamatSimpanan: 'Sama seperti alamat premis', jenis: 'LESEN', dokumen: 'L-1003', status: 'HAMPIR TAMAT', kemaskini: '20/06/2026', tarikhTamat: '10/08/2026', hariBaki: 22, barang: 'Gula', kuantiti: '300 KG', pembekal: '-', pegawai: 'Chong Wei', telefon: '012-3334445' },
+        { id: 'R006', syarikat: 'MEGA RESOURCES SDN BHD', ssm: '12345-A', jenisSyarikat: 'Cawangan', alamat: 'Cawangan Kepala Batas, 11 Kompleks, 13200 Pulau Pinang', alamatSimpanan: 'Sama seperti alamat premis', jenis: 'PERMIT', dokumen: 'P-2003', status: 'AKTIF', kemaskini: '05/07/2026', tarikhTamat: '30/11/2026', hariBaki: 134, barang: 'Tepung', kuantiti: '1000 KG', pembekal: 'Tepung Utara', pegawai: 'Tan Ah Kow', telefon: '012-3334446' },
+        { id: 'R007', syarikat: 'MEGA RESOURCES SDN BHD', ssm: '12345-A', jenisSyarikat: 'Cawangan', alamat: 'Cawangan Balik Pulau, 33 Jln Tun Sardon, 11000 Pulau Pinang', alamatSimpanan: 'Sama seperti alamat premis', jenis: 'LESEN', dokumen: 'L-1004', status: 'AKTIF', kemaskini: '12/05/2026', tarikhTamat: '31/12/2027', hariBaki: 530, barang: 'Minyak Masak', kuantiti: '100 KG', pembekal: '-', pegawai: 'Siti Nurhaliza', telefon: '012-3334447' },
+        { id: 'R008', syarikat: 'MEGA RESOURCES SDN BHD', ssm: '12345-A', jenisSyarikat: 'Cawangan', alamat: 'Cawangan Jelutong, 88 Jln Jelutong, 11600 Pulau Pinang', alamatSimpanan: 'Sama seperti alamat premis', jenis: 'PERMIT', dokumen: 'P-2004', status: 'AKTIF', kemaskini: '19/07/2026', tarikhTamat: '15/12/2026', hariBaki: 149, barang: 'Gula', kuantiti: '5000 KG', pembekal: 'Gula Prai Bhd', pegawai: 'Aminah', telefon: '012-3334448' },
+        { id: 'R009', syarikat: 'MEGA RESOURCES SDN BHD', ssm: '12345-A', jenisSyarikat: 'Cawangan', alamat: 'Cawangan Batu Kawan, 22 Persiaran Cassia, 14100 Pulau Pinang', alamatSimpanan: 'Sama seperti alamat premis', jenis: 'LESEN', dokumen: 'L-1005', status: 'TAMAT', kemaskini: '01/01/2026', tarikhTamat: '12/01/2026', hariBaki: -180, barang: 'Tepung', kuantiti: '500 KG', pembekal: '-', pegawai: 'Raju', telefon: '012-3334449' },
+        { id: 'R010', syarikat: 'MEGA RESOURCES SDN BHD', ssm: '12345-A', jenisSyarikat: 'Cawangan', alamat: 'Cawangan Seberang Jaya, 44 Jln Tenggiri, 13700 Pulau Pinang', alamatSimpanan: 'Sama seperti alamat premis', jenis: 'PERMIT', dokumen: 'P-2005', status: 'AKTIF', kemaskini: '10/06/2026', tarikhTamat: '31/01/2027', hariBaki: 196, barang: 'Minyak Masak', kuantiti: '2000 KG', pembekal: 'Sime Darby Oils', pegawai: 'Kumar', telefon: '012-3334450' },
+        { id: 'R011', syarikat: 'KEDAI RUNCIT MUTIARA', ssm: '98765-X', jenisSyarikat: 'Ibu Pejabat', alamat: 'Bayan Lepas, Pulau Pinang', alamatSimpanan: 'Sama seperti alamat premis', jenis: 'PERMIT', dokumen: 'P-1122', status: 'HAMPIR TAMAT', kemaskini: '10/07/2026', tarikhTamat: '10/08/2026', hariBaki: 22, barang: 'Tepung', kuantiti: '200 KG', pembekal: 'Tepung Utara', pegawai: 'Samat', telefon: '019-8889999' },
+        { id: 'R012', syarikat: 'SYARIKAT BINA JAYA', ssm: '44556-C', jenisSyarikat: 'Ibu Pejabat', alamat: '12 Jalan Binaan, Gelugor, 11700 Pulau Pinang', alamatSimpanan: 'Sama seperti alamat premis', jenis: 'LESEN', dokumen: 'L-1006', status: 'AKTIF', kemaskini: '01/03/2026', tarikhTamat: '28/02/2027', hariBaki: 224, barang: 'Diesel', kuantiti: '10000 LITER', pembekal: '-', pegawai: 'Azman', telefon: '013-4455667' },
+        { id: 'R013', syarikat: 'KILANG ROTI SEDAP', ssm: '77889-D', jenisSyarikat: 'Ibu Pejabat', alamat: 'Kawasan Perindustrian Mak Mandin, 13400 Pulau Pinang', alamatSimpanan: 'Sama seperti alamat premis', jenis: 'PERMIT', dokumen: 'P-2006', status: 'AKTIF', kemaskini: '15/01/2026', tarikhTamat: '31/12/2026', hariBaki: 165, barang: 'Gula, Tepung', kuantiti: '5000 KG', pembekal: 'Tepung Utara, Gula Prai Bhd', pegawai: 'Wong Kah Mun', telefon: '016-7788990' },
+        { id: 'R014', syarikat: 'RUNCIT PAK ABU', ssm: '11223-E', jenisSyarikat: 'Ibu Pejabat', alamat: 'Kg Melayu, Ayer Itam, 11500 Pulau Pinang', alamatSimpanan: 'Sama seperti alamat premis', jenis: 'LESEN', dokumen: 'L-1007', status: 'TAMAT', kemaskini: '01/12/2025', tarikhTamat: '31/12/2025', hariBaki: -200, barang: 'Gula, Minyak Masak', kuantiti: '500 KG', pembekal: '-', pegawai: 'Pak Abu', telefon: '019-1122334' },
+        { id: 'R015', syarikat: 'BORONG MAJU MERDANG', ssm: '44332-F', jenisSyarikat: 'Ibu Pejabat', alamat: 'Taman Merdang, Bukit Mertajam, 14000 Pulau Pinang', alamatSimpanan: 'Gudang Belakang', jenis: 'PERMIT', dokumen: 'P-2007', status: 'HAMPIR TAMAT', kemaskini: '01/08/2025', tarikhTamat: '31/07/2026', hariBaki: 12, barang: 'Beras', kuantiti: '8000 KG', pembekal: 'Beras Nasional', pegawai: 'Ramesh', telefon: '012-4433221' },
+        { id: 'R016', syarikat: 'PASARAYA BEST', ssm: '99887-G', jenisSyarikat: 'Ibu Pejabat', alamat: 'Kompleks Best, Bertam, 13200 Pulau Pinang', alamatSimpanan: 'Gudang Best', jenis: 'LESEN', dokumen: 'L-1008', status: 'AKTIF', kemaskini: '05/05/2026', tarikhTamat: '30/04/2027', hariBaki: 285, barang: 'Gula, Tepung, Minyak Masak', kuantiti: '3000 KG', pembekal: '-', pegawai: 'Lisa', telefon: '017-9988776' },
+        { id: 'R017', syarikat: 'PASARAYA BEST', ssm: '99887-G', jenisSyarikat: 'Cawangan', alamat: 'Cawangan Tasek Gelugor, 13300 Pulau Pinang', alamatSimpanan: 'Sama seperti alamat premis', jenis: 'PERMIT', dokumen: 'P-2008', status: 'AKTIF', kemaskini: '10/05/2026', tarikhTamat: '30/04/2027', hariBaki: 285, barang: 'Gula, Tepung, Minyak Masak', kuantiti: '1500 KG', pembekal: 'Ibu Pejabat Pasaraya Best', pegawai: 'John Doe', telefon: '017-9988777' },
+        { id: 'R018', syarikat: 'TEGUH LOGISTICS', ssm: '55566-H', jenisSyarikat: 'Ibu Pejabat', alamat: 'Pelabuhan Pulau Pinang, 10300 Pulau Pinang', alamatSimpanan: 'Tangki A1, Pelabuhan', jenis: 'PERMIT', dokumen: 'P-2009', status: 'TAMAT', kemaskini: '15/06/2025', tarikhTamat: '30/06/2026', hariBaki: -19, barang: 'Diesel', kuantiti: '50000 LITER', pembekal: 'Petronas', pegawai: 'Kamal', telefon: '013-5556677' },
+        { id: 'R019', syarikat: 'KILANG MINYAK SAWIT UTARA', ssm: '33221-J', jenisSyarikat: 'Ibu Pejabat', alamat: 'Nibong Tebal Estate, 14300 Pulau Pinang', alamatSimpanan: 'Tangki Utama', jenis: 'LESEN', dokumen: 'L-1009', status: 'AKTIF', kemaskini: '20/02/2026', tarikhTamat: '28/02/2028', hariBaki: 589, barang: 'Minyak Masak', kuantiti: '100 MT', pembekal: '-', pegawai: 'Suresh', telefon: '012-3322110' },
+        { id: 'R020', syarikat: 'KEDAI SERBANEKA 24JAM', ssm: '88776-K', jenisSyarikat: 'Ibu Pejabat', alamat: 'Lebuh Chulia, 10200 Pulau Pinang', alamatSimpanan: 'Sama seperti alamat premis', jenis: 'LESEN', dokumen: 'L-1010', status: 'HAMPIR TAMAT', kemaskini: '10/08/2025', tarikhTamat: '15/08/2026', hariBaki: 27, barang: 'Gula', kuantiti: '100 KG', pembekal: '-', pegawai: 'Amin', telefon: '019-8877665' }
+      ],
+      naziran: [
+        { id: 'NZ-20260719-001', NO_SIRI: 'KPDN/2026/1001', JENIS_NAZIRAN: 'LESEN', KATEGORI_NAZIRAN: 'NAZIRAN PINDAAN', STATUS_NAZIRAN: 'SELESAI NAZIRAN', CATATAN_PEMERHATIAN: 'NAZIRAN ULANGAN', 'NAMA SYARIKAT': 'MEGA RESOURCES SDN BHD', 'NO SSM': '12345-A', 'ALAMAT PERNIAGAAN': 'Cawangan Georgetown, 123 Jln Maju', TARIKH_ARAHAN: '2026-07-15', TARIKH_SELESAI: '-', TARIKH_KEMASKINI: '15/07/2026 10:00', NO_LESEN: 'L-1001', STATUS_ADMIN: '', ULASAN_ADMIN: '' },
+        { id: 'NZ-20260718-002', NO_SIRI: 'KPDN/2026/1002', JENIS_NAZIRAN: 'PERMIT', KATEGORI_NAZIRAN: 'NAZIRAN BAHARU', STATUS_NAZIRAN: 'SELESAI NAZIRAN', CATATAN_PEMERHATIAN: 'DISYORKAN KELULUSAN', 'NAMA SYARIKAT': 'KEDAI RUNCIT MUTIARA', 'NO SSM': '98765-X', 'ALAMAT PERNIAGAAN': 'Bayan Lepas, Pulau Pinang', TARIKH_ARAHAN: '2026-07-10', TARIKH_SELESAI: '2026-07-18', TARIKH_KEMASKINI: '18/07/2026 14:30', NO_LESEN: '', STATUS_ADMIN: 'DILULUSKAN', ULASAN_ADMIN: 'Lulus' },
+        { id: 'NZ-20260715-003', NO_SIRI: 'KPDN/2026/1003', JENIS_NAZIRAN: 'LESEN', KATEGORI_NAZIRAN: 'NAZIRAN BAHARU', STATUS_NAZIRAN: 'TINDAKAN - PENGESYORAN', CATATAN_PEMERHATIAN: 'DISYORKAN KELULUSAN', 'NAMA SYARIKAT': 'SYARIKAT MAJU JAYA', 'NO SSM': '55667-B', 'ALAMAT PERNIAGAAN': 'Butterworth, Pulau Pinang', TARIKH_ARAHAN: '2026-07-05', TARIKH_SELESAI: '2026-07-10', TARIKH_KEMASKINI: '10/07/2026 11:15', NO_LESEN: '', STATUS_ADMIN: '', ULASAN_ADMIN: '' }
+      ]
+    };
 
-    function getModeFromUrl(){
-      const params = new URLSearchParams(window.location.search);
-      const mode = (params.get('mode') || DEFAULT_MODE || 'lapangan').toLowerCase();
-      return mode === 'admin' ? 'admin' : 'lapangan';
-    }
-
-    function buildUrl(mode){
-      const base = cleanBaseUrl();
-      const joiner = base.includes('?') ? '&' : '?';
-      return base + joiner + 'mode=' + encodeURIComponent(mode);
-    }
-
-    function setNotice(text,type){
-      const el = document.getElementById('notice');
-      if(!text){ el.className='notice'; el.innerHTML=''; return; }
-      el.className='notice show';
-      el.innerHTML=text;
-    }
-
-    function setActive(mode){
-      document.getElementById('btnLapangan').classList.toggle('active', mode === 'lapangan');
-      document.getElementById('btnAdmin').classList.toggle('active', mode === 'admin');
-      document.getElementById('statusPill').textContent = 'Status: ' + (mode === 'admin' ? 'Pentadbir' : 'Pegawai Lapangan');
-    }
-
-    function openSigma(mode){
-      if(!isConfigured()){
-        document.getElementById('setup').classList.add('show');
-        document.getElementById('frameWrap').style.display = 'none';
-        document.getElementById('openDirect').href = '#';
-        document.getElementById('statusPill').textContent = 'Status: Perlu konfigurasi';
-        setNotice('Sila masukkan URL Web App Apps Script pada <b>SIGMA_APPS_SCRIPT_URL</b> sebelum deploy ke Vercel.','warn');
-        return;
+    const api = {
+      async delay(ms = 300) { return new Promise(res => setTimeout(res, ms)); },
+      _filterByScope(data, scope, typeField) {
+        if (scope === 'SEMUA') return data;
+        return data.filter(d => d[typeField] === scope);
+      },
+      async getDashboardStats(scope) {
+        await this.delay();
+        const data = this._filterByScope(DB.kelulusan, scope, 'jenis');
+        return [
+          { label: 'Syarikat Master', value: new Set(data.map(d => d.ssm)).size, color: 'blue' },
+          { label: 'Rekod Dokumen', value: data.length, color: 'purple' },
+          { label: 'Status Aktif', value: data.filter(d => d.status === 'AKTIF').length, color: 'green' },
+          { label: 'Hampir Tamat', value: data.filter(d => d.status === 'HAMPIR TAMAT').length, color: 'gold' }
+        ];
+      },
+      async searchLapangan(keyword, alamat, jenis, scope) {
+        await this.delay(400);
+        if(!keyword) return []; 
+        let data = this._filterByScope(DB.kelulusan, scope, 'jenis');
+        return data.filter(d => {
+           const matchKey = d.syarikat.toLowerCase().includes(keyword.toLowerCase()) || d.ssm.includes(keyword.toUpperCase());
+           const matchAlamat = !alamat || d.alamat.toLowerCase().includes(alamat.toLowerCase());
+           const matchJenis = jenis === 'SEMUA' || d.jenis === jenis;
+           return matchKey && matchAlamat && matchJenis;
+        });
+      },
+      async getAdminDashboardStats() {
+        await this.delay(200);
+        let data = DB.kelulusan;
+        let forcedScope = app.state.scope;
+        if (forcedScope !== 'SEMUA') {
+            data = data.filter(r => r.jenis === forcedScope);
+        }
+        
+        let stats = { syarikat: new Set(data.map(d => d.ssm)).size, kelulusan: data.length, lesen: 0, lesenAktif: 0, permit: 0, permitAktif: 0, permitTamat: 0 };
+        data.forEach(d => {
+            if(d.jenis === 'LESEN') {
+                stats.lesen++;
+                if(d.status === 'AKTIF') stats.lesenAktif++;
+            } else if(d.jenis === 'PERMIT') {
+                stats.permit++;
+                if(d.status === 'AKTIF') stats.permitAktif++;
+                if(d.status === 'TAMAT' || d.status === 'HAMPIR TAMAT') stats.permitTamat++;
+            }
+        });
+        return stats;
+      },
+      async getRecordById(id, scope) {
+        await this.delay(200);
+        let data = this._filterByScope(DB.kelulusan, scope, 'jenis');
+        return data.find(d => d.id === id) || null;
+      },
+      async getNaziranDashboard(scope) {
+        await this.delay(300);
+        let data = this._filterByScope(DB.naziran, scope, 'JENIS_NAZIRAN');
+        let stats = { total: data.length, perlu: 0, selesai: 0, pengesyoran: 0, lulus: 0 };
+        data.forEach(d => {
+            if (d.STATUS_NAZIRAN === 'PERLU NAZIRAN') stats.perlu++;
+            if (d.STATUS_NAZIRAN === 'SELESAI NAZIRAN' || d.CATATAN_PEMERHATIAN) stats.selesai++;
+            if (d.CATATAN_PEMERHATIAN === 'DISYORKAN KELULUSAN' && !d.STATUS_ADMIN) stats.pengesyoran++;
+            if (d.STATUS_ADMIN === 'DILULUSKAN') stats.lulus++;
+        });
+        return { rows: data, stats: stats };
+      },
+      async saveNaziran(data, scope) {
+        await this.delay(400);
+        if(scope !== 'SEMUA' && data.JENIS_NAZIRAN !== scope) throw new Error(`Akses Ditolak: Anda hanya dibenarkan menyimpan rekod ${scope}.`);
+        if (data.ID_NAZIRAN) {
+            let index = DB.naziran.findIndex(d => d.id === data.ID_NAZIRAN);
+            if(index !== -1) {
+                DB.naziran[index] = { ...DB.naziran[index], ...data, TARIKH_KEMASKINI: new Date().toLocaleString() };
+                return DB.naziran[index];
+            }
+        }
+        let newId = 'NZ-' + new Date().toISOString().slice(0,10).replace(/-/g,'') + '-' + Math.floor(100 + Math.random() * 900);
+        let noSiri = 'KPDN/2026/' + Math.floor(1000 + Math.random() * 9000);
+        let newRec = { ...data, id: newId, NO_SIRI: noSiri, TARIKH_KEMASKINI: new Date().toLocaleString(), STATUS_ADMIN: '', ULASAN_ADMIN: '' };
+        DB.naziran.unshift(newRec);
+        return newRec;
+      },
+      async saveAdminUlasan(id, status, ulasan) {
+         await this.delay(300);
+         let index = DB.naziran.findIndex(d => d.id === id);
+         if(index !== -1) {
+             DB.naziran[index].STATUS_ADMIN = status;
+             DB.naziran[index].ULASAN_ADMIN = ulasan;
+             DB.naziran[index].TARIKH_SELESAI = new Date().toISOString().slice(0,10);
+         }
+         return true;
+      },
+      async getSyarikat(scope) {
+        await this.delay();
+        let syarikatMap = {};
+        DB.kelulusan.forEach(d => {
+            if(scope === 'SEMUA' || d.jenis === scope) {
+                if(!syarikatMap[d.ssm]) syarikatMap[d.ssm] = { ssm: d.ssm, nama: d.syarikat, sektor: new Set(), status: 'AKTIF' };
+                syarikatMap[d.ssm].sektor.add(d.jenis);
+            }
+        });
+        return Object.values(syarikatMap).map(s => { s.sektorTerlibat = Array.from(s.sektor).join(' & '); return s; });
       }
+    };
 
-      mode = mode === 'admin' ? 'admin' : 'lapangan';
-      const target = buildUrl(mode);
-      const frame = document.getElementById('sigmaFrame');
-      const mask = document.getElementById('loadingMask');
+    const moduleLapangan = {
+      init() { this.closeDetail(); },
+      async search() {
+        const keyword = document.getElementById('lapSearchKey').value.trim();
+        const alamat = document.getElementById('lapSearchAlamat').value.trim();
+        const jenis = document.getElementById('lapSearchJenis').value;
+        const tbody = document.getElementById('lapTableBody');
+        const alertBox = document.getElementById('lapSearchAlert');
+        const summaryBox = document.getElementById('lapSummary');
+        
+        if(!keyword) {
+            alertBox.textContent = 'Ralat: Nama Syarikat / SSM wajib diisi untuk membuat carian.';
+            alertBox.style.display = 'block';
+            summaryBox.classList.add('hidden');
+            tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: var(--muted); padding: 30px;">Sila isi maklumat carian (Nama Syarikat wajib).</td></tr>';
+            return;
+        }
+        alertBox.style.display = 'none';
+        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding: 30px;">Mencari rekod...</td></tr>';
+        summaryBox.classList.add('hidden');
 
-      setActive(mode);
-      document.getElementById('setup').classList.remove('show');
-      document.getElementById('frameWrap').style.display = 'block';
-      document.getElementById('openDirect').href = target;
-      setNotice('', '');
+        // Modul Lapangan sentiasa menggunakan skop 'SEMUA' tidak kira peranan pengguna
+        const results = await api.searchLapangan(keyword, alamat, jenis, 'SEMUA');
+        
+        if(results.length === 0) {
+           tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding: 30px;">Tiada rekod ditemui menepati carian dan skop anda.</td></tr>';
+           return;
+        }
+        
+        let uniqueSyarikat = new Set();
+        let uniqueSsm = new Set();
+        let countLesen = 0, countPermit = 0;
 
-      mask.classList.remove('hidden');
-      frame.src = target;
+        results.forEach(r => {
+            uniqueSyarikat.add(r.syarikat);
+            uniqueSsm.add(r.ssm);
+            if(r.jenis === 'LESEN') countLesen++;
+            if(r.jenis === 'PERMIT') countPermit++;
+        });
 
-      const url = new URL(window.location.href);
-      url.searchParams.set('mode', mode);
-      window.history.replaceState({}, '', url.toString());
-    }
+        document.getElementById('lapSumSyarikat').textContent = uniqueSyarikat.size;
+        document.getElementById('lapSumSsm').textContent = results.length; // Cawangan rekod
+        document.getElementById('lapSumLesen').textContent = countLesen;
+        document.getElementById('lapSumPermit').textContent = countPermit;
+        summaryBox.classList.remove('hidden');
 
-    document.getElementById('sigmaFrame').addEventListener('load', function(){
-      document.getElementById('loadingMask').classList.add('hidden');
+        tbody.innerHTML = results.map(r => {
+           let badgeCls = 'badge-info';
+           if(r.status === 'AKTIF') badgeCls = 'badge-aktif';
+           if(r.status.includes('TAMAT')) badgeCls = 'badge-tamat';
+           return `<tr>
+             <td><div class="company-name">${r.syarikat}</div><div class="text-sm-muted">SSM: ${r.ssm}</div></td>
+             <td><div class="text-address">${r.alamat}</div></td>
+             <td><span class="badge badge-info" style="margin-bottom:4px;">${r.jenis}</span><br><b>${r.dokumen}</b></td>
+             <td><span class="badge ${badgeCls}" style="margin-bottom:4px;">${r.status}</span><br><span class="text-sm-muted">${r.hariBaki} Hari Baki</span></td>
+             <td><button class="btn btn-outline btn-small" onclick="moduleLapangan.lihatRekod('${r.id}')">Lihat Rekod</button></td>
+           </tr>`;
+        }).join('');
+      },
+
+      async lihatRekod(id) {
+        document.getElementById('lapSearchView').classList.add('hidden');
+        document.getElementById('lapDetailView').classList.remove('hidden');
+        const container = document.getElementById('detRecordsContainer');
+        container.innerHTML = '<p>Memuatkan butiran terperinci...</p>';
+
+        // Modul Lapangan sentiasa menggunakan skop 'SEMUA' tidak kira peranan pengguna
+        const r = await api.getRecordById(id, 'SEMUA');
+        
+        if(r) {
+            document.getElementById('detCompName').textContent = r.syarikat;
+            document.getElementById('detCompSsm').textContent = r.ssm;
+            document.getElementById('detCompJenis').textContent = r.jenisSyarikat || 'Cawangan';
+            document.getElementById('detCompAddr').textContent = r.alamat;
+            document.getElementById('detCompPegawai').textContent = r.pegawai || '-';
+            document.getElementById('detCompTel').textContent = r.telefon || '-';
+
+            let badgeCls = r.status === 'AKTIF' ? 'badge-aktif' : 'badge-tamat';
+            container.innerHTML = `
+            <div class="record-card">
+                <div class="record-card-header">
+                    <div class="record-card-title"><span class="badge badge-info">${r.jenis}</span>${r.dokumen}</div>
+                    <span class="badge ${badgeCls}">${r.status}</span>
+                </div>
+                <div class="record-details-grid">
+                    <div class="detail-item"><span class="detail-label">Tarikh Tamat</span><span class="detail-value">${r.tarikhTamat}</span></div>
+                    <div class="detail-item"><span class="detail-label">Hari Baki</span><span class="detail-value">${r.hariBaki} Hari</span></div>
+                    <div class="detail-item detail-full-width"><span class="detail-label">Barang Kawalan & Kuantiti</span><span class="detail-value">${r.barang} (${r.kuantiti})</span></div>
+                    <div class="detail-item detail-full-width"><span class="detail-label">Syarikat Pembekal</span><span class="detail-value">${r.pembekal}</span></div>
+                    <div class="detail-item detail-full-width" style="background:var(--bg);"><span class="detail-label">Alamat Simpanan</span><span class="detail-value">${r.alamatSimpanan || '-'}</span></div>
+                </div>
+            </div>`;
+        } else {
+            container.innerHTML = '<p>Tiada rekod ditemui untuk dokumen ini dalam skop anda.</p>';
+        }
+      },
+
+      closeDetail() {
+          document.getElementById('lapDetailView').classList.add('hidden');
+          document.getElementById('lapSearchView').classList.remove('hidden');
+      },
+
+      reset() {
+        document.getElementById('lapSearchKey').value = '';
+        document.getElementById('lapSearchAlamat').value = '';
+        document.getElementById('lapSearchAlert').style.display = 'none';
+        document.getElementById('lapSummary').classList.add('hidden');
+        document.getElementById('lapSearchJenis').value = 'SEMUA';
+        document.getElementById('lapTableBody').innerHTML = '<tr><td colspan="5" style="text-align: center; color: var(--muted); padding: 30px;">Sila buat carian. Nama syarikat wajib diisi.</td></tr>';
+        this.closeDetail();
+      }
+    };
+
+    const moduleNaziran = {
+      currentRecordId: null,
+      
+      init() { this.closeForm(); this.loadData(); },
+      
+      async loadData() {
+        const tbodySemasa = document.getElementById('nazTableBody');
+        const tbodySejarah = document.getElementById('nazHistoryTableBody');
+        tbodySemasa.innerHTML = '<tr><td colspan="5" style="text-align:center; padding: 30px;">Memuatkan data...</td></tr>';
+        
+        try {
+            const res = await api.getNaziranDashboard(app.state.scope);
+            
+            document.getElementById('kpiNzTotal').textContent = res.stats.total;
+            document.getElementById('kpiNzPerlu').textContent = res.stats.perlu;
+            document.getElementById('kpiNzSelesai').textContent = res.stats.selesai;
+            document.getElementById('kpiNzPengesyoran').textContent = res.stats.pengesyoran;
+            document.getElementById('kpiNzLulus').textContent = res.stats.lulus;
+
+            const semasa = [];
+            const sejarah = [];
+            res.rows.forEach(r => {
+               if(r.STATUS_ADMIN) sejarah.push(r);
+               else semasa.push(r);
+            });
+
+            if(semasa.length === 0) {
+               tbodySemasa.innerHTML = '<tr><td colspan="5" style="text-align:center; padding: 30px;">Tiada rekod naziran semasa dalam skop ini.</td></tr>'; 
+            } else {
+               tbodySemasa.innerHTML = semasa.map(r => {
+                 let statusBadgeStr = `<span class="badge badge-dark">${r.STATUS_NAZIRAN}</span>`;
+                 if(r.CATATAN_PEMERHATIAN) {
+                    let catCls = 'badge-warning';
+                    if(r.CATATAN_PEMERHATIAN === 'DISYORKAN KELULUSAN') catCls = 'badge-info';
+                    if(r.CATATAN_PEMERHATIAN === 'GAGAL') catCls = 'badge-tamat';
+                    statusBadgeStr = `<span class="badge ${catCls}">${r.CATATAN_PEMERHATIAN}</span>`;
+                 }
+
+                 let actionBtns = `<button class="btn btn-primary btn-small" onclick="moduleNaziran.doNaziran('${r.id}')">NAZIRAN</button>`;
+                 if (app.state.role.includes('ADMIN') || app.state.role === 'SUPER ADMIN') {
+                     actionBtns += ` <button class="btn btn-info btn-small" onclick="moduleNaziran.doUlasan('${r.id}')">ULASAN</button>`;
+                 }
+
+                 return `<tr>
+                   <td><b>${r.NO_SIRI || '-'}</b><br><div style="margin-top:4px">${statusBadgeStr}</div></td>
+                   <td><div class="company-name">${r['NAMA SYARIKAT']}</div><div class="text-sm-muted">SSM: ${r['NO SSM'] || '-'}</div></td>
+                   <td>${r.TARIKH_ARAHAN || '-'}</td>
+                   <td>${r.TARIKH_SELESAI || '-'}</td>
+                   <td>${actionBtns}</td>
+                 </tr>`;
+              }).join('');
+            }
+
+            if(sejarah.length > 0) {
+               document.getElementById('nazHistoryCard').style.display = 'block';
+               tbodySejarah.innerHTML = sejarah.map(r => {
+                 let admCls = r.STATUS_ADMIN === 'DILULUSKAN' ? 'badge-aktif' : 'badge-tamat';
+                 return `<tr>
+                   <td><b>${r.NO_SIRI || '-'}</b><br><span class="badge badge-dark" style="margin-top:4px">${r.KATEGORI_NAZIRAN}</span></td>
+                   <td><div class="company-name">${r['NAMA SYARIKAT']}</div><div class="text-sm-muted">SSM: ${r['NO SSM'] || '-'}</div></td>
+                   <td>${r.TARIKH_SELESAI || '-'}</td>
+                   <td><span class="badge ${admCls}">${r.STATUS_ADMIN}</span><br><span class="text-sm-muted">${r.ULASAN_ADMIN || ''}</span></td>
+                   <td><button class="btn btn-outline btn-small" onclick="moduleNaziran.doNaziran('${r.id}', true)">LIHAT</button></td>
+                 </tr>`;
+               }).join('');
+            } else {
+               document.getElementById('nazHistoryCard').style.display = 'none';
+            }
+
+        } catch (e) {
+            tbodySemasa.innerHTML = `<tr><td colspan="5" style="text-align:center; padding: 30px; color: red;">Ralat: ${e.message}</td></tr>`; 
+        }
+      },
+
+      doNaziran(id, isReadOnly = false) {
+          this.resetForm();
+          const r = DB.naziran.find(x => x.id === id);
+          if(r) {
+              document.getElementById('naz_ID_NAZIRAN').value = r.id;
+              document.getElementById('naz_NO_SIRI').value = r.NO_SIRI || '';
+              document.getElementById('naz_NAMA_SYARIKAT').value = r['NAMA SYARIKAT'] || '';
+              document.getElementById('naz_NO_SSM').value = r['NO SSM'] || '';
+              document.getElementById('naz_ALAMAT_PERNIAGAAN').value = r['ALAMAT PERNIAGAAN'] || '';
+              document.getElementById('naz_JENIS_NAZIRAN').value = r.JENIS_NAZIRAN || '';
+              document.getElementById('naz_KATEGORI_NAZIRAN').value = r.KATEGORI_NAZIRAN || 'NAZIRAN BAHARU';
+              
+              document.getElementById('naz_JENIS_NAZIRAN').disabled = true;
+              document.getElementById('naz_NAMA_SYARIKAT').readOnly = true;
+              document.getElementById('naz_NO_SSM').readOnly = true;
+              
+              if(r.KATEGORI_NAZIRAN === 'NAZIRAN PINDAAN') {
+                  document.getElementById('naz_NO_LESEN').value = r.NO_LESEN || '';
+              } else {
+                  document.getElementById('naz_NO_LESEN').value = '';
+              }
+              
+              this.addBarangRow();
+              this.addPembekalRow();
+              this.addPelangganRow();
+              this.addStorRow();
+              this.addPengedaranRow();
+              
+              document.getElementById('nazFormTitle').textContent = `Rekod Naziran: ${r.NO_SIRI || 'BAHARU'}`;
+              document.getElementById('nazFormMode').textContent = isReadOnly ? 'SEJARAH' : 'KEMASKINI';
+          }
+          
+          document.getElementById('naziranFormCard').style.display = 'block';
+          document.getElementById('nazSearchCard').style.display = 'none';
+          document.getElementById('nazHistoryCard').style.display = 'none';
+          document.getElementById('naziranKpiContainer').style.display = 'none'; 
+          
+          document.querySelectorAll('.pegawai-save-btn').forEach(el => el.style.display = isReadOnly ? 'none' : '');
+          document.querySelectorAll('.admin-only-section').forEach(el => el.style.display = 'none');
+          if(isReadOnly) document.getElementById('adminCancelBtn').style.display = 'block';
+
+          document.getElementById('naziranFormCard').scrollIntoView({behavior: 'smooth'});
+      },
+      
+      doUlasan(id) {
+          this.currentRecordId = id;
+          this.doNaziran(id, true);
+          
+          document.getElementById('nazFormTitle').textContent = `Ulasan Pentadbir: Rekod ${id}`;
+          document.getElementById('nazFormMode').textContent = 'ULASAN ADMIN';
+          document.getElementById('nazFormMode').className = 'badge badge-warning';
+
+          document.querySelectorAll('.pegawai-save-btn').forEach(el => el.style.display = 'none');
+          document.getElementById('adminCancelBtn').style.display = 'none';
+          document.querySelectorAll('.admin-only-section').forEach(el => el.style.display = 'block');
+      },
+
+      async saveAdminUlasan(status) {
+          const ulasanText = document.getElementById('admin_ulasan_text').value.trim();
+          if(!ulasanText && status === 'TIDAK DILULUSKAN') {
+              showToast('Sila berikan ulasan kenapa ia tidak diluluskan.', 'error'); return;
+          }
+          if(!this.currentRecordId) return;
+          
+          try {
+              await api.saveAdminUlasan(this.currentRecordId, status, ulasanText);
+              showToast(`Rekod telah dikemaskini sebagai: ${status}`, 'success');
+              this.closeForm();
+              this.loadData();
+          } catch(e) { showToast(e.message, 'error'); }
+      },
+
+      muatTurunPDF() {
+          showToast('Menjana PDF... Sila tunggu sebentar.', 'info');
+          setTimeout(() => {
+              showToast('Dokumen Naziran berjaya dimuat turun!', 'success');
+          }, 1500);
+      },
+
+      toggleKategoriPindaan(val) {
+          if(val === 'NAZIRAN BAHARU') {
+             document.getElementById('naz_NO_LESEN').value = '';
+             document.getElementById('nzBarangTbody').innerHTML = '';
+             this.addBarangRow();
+          }
+      },
+
+      saveRow(btn) {
+          const tr = btn.closest('tr');
+          const inputs = tr.querySelectorAll('.edit-mode');
+          inputs.forEach(inp => {
+              if(inp.tagName === 'INPUT' || inp.tagName === 'SELECT') {
+                  const classList = Array.from(inp.classList);
+                  const identifier = classList.find(c => c.startsWith('inp-'));
+                  if(identifier) {
+                      const valClass = identifier.replace('inp-', 'val-');
+                      const viewDiv = tr.querySelector('.' + valClass);
+                      if(viewDiv) {
+                          if (inp.tagName === 'SELECT') {
+                              viewDiv.textContent = inp.options[inp.selectedIndex].text || '-';
+                          } else {
+                              viewDiv.textContent = inp.value || '-';
+                          }
+                      }
+                  }
+              }
+          });
+          tr.classList.remove('editing');
+          tr.classList.add('viewing');
+      },
+
+      editRow(btn) {
+          const tr = btn.closest('tr');
+          tr.classList.remove('viewing');
+          tr.classList.add('editing');
+      },
+
+      addBarangRow(nama='', kuantiti='', ukuran='') {
+          const tbody = document.getElementById('nzBarangTbody');
+          const tr = document.createElement('tr');
+          tr.className = 'nz-row editing';
+          tr.innerHTML = `
+              <td>
+                 <div class="view-mode val-text val-nama"></div>
+                 <input type="text" class="edit-mode inp-nama" style="width:100%; padding:8px; border:1px solid var(--border); border-radius:6px; font-size:12px;" placeholder="Cth: Gula" value="${nama}">
+              </td>
+              <td>
+                 <div class="view-mode val-text val-kuantiti"></div>
+                 <input type="number" class="edit-mode inp-kuantiti" style="width:100%; padding:8px; border:1px solid var(--border); border-radius:6px; font-size:12px;" placeholder="0" value="${kuantiti}">
+              </td>
+              <td>
+                 <div class="view-mode val-text val-ukuran"></div>
+                 <select class="edit-mode inp-ukuran" style="width:100%; padding:8px; border:1px solid var(--border); border-radius:6px; font-size:12px;">
+                    <option value="KG" ${ukuran==='KG'?'selected':''}>KG</option>
+                    <option value="LITER" ${ukuran==='LITER'?'selected':''}>LITER</option>
+                    <option value="UNIT" ${ukuran==='UNIT'?'selected':''}>UNIT</option>
+                    <option value="MT" ${ukuran==='MT'?'selected':''}>MT</option>
+                 </select>
+              </td>
+              <td style="text-align:center;">
+                 <div style="display:flex; gap:4px; justify-content:center;">
+                    <button type="button" class="btn btn-success btn-small edit-mode pegawai-save-btn" onclick="moduleNaziran.saveRow(this)">Simpan</button>
+                    <button type="button" class="btn btn-primary btn-small view-mode pegawai-save-btn" onclick="moduleNaziran.editRow(this)">Pinda</button>
+                    <button type="button" class="btn btn-outline btn-small pegawai-save-btn" style="color:var(--danger); border-color:var(--danger);" onclick="this.closest('tr').remove()">X</button>
+                 </div>
+              </td>
+          `;
+          tbody.appendChild(tr);
+          if(nama) this.saveRow(tr.querySelector('.btn-success'));
+      },
+
+      addPembekalRow(nama='', alamat='', barang='', kekerapan='', purata='', ukuran='') {
+          const tbody = document.getElementById('nzPembekalTbody');
+          const tr = document.createElement('tr');
+          tr.className = 'nz-row editing';
+          tr.innerHTML = `
+              <td>
+                 <div class="view-mode val-text val-nama"></div>
+                 <input type="text" class="edit-mode inp-nama" style="width:100%; padding:8px; border:1px solid var(--border); border-radius:6px; font-size:12px;" placeholder="Nama Pembekal" value="${nama}">
+              </td>
+              <td>
+                 <div class="view-mode val-text val-alamat"></div>
+                 <input type="text" class="edit-mode inp-alamat" style="width:100%; padding:8px; border:1px solid var(--border); border-radius:6px; font-size:12px;" placeholder="Alamat Penuh" value="${alamat}">
+              </td>
+              <td>
+                 <div class="view-mode val-text val-barang"></div>
+                 <input type="text" class="edit-mode inp-barang" style="width:100%; padding:8px; border:1px solid var(--border); border-radius:6px; font-size:12px;" placeholder="Barang Kawalan" value="${barang}">
+              </td>
+              <td>
+                 <div class="view-mode val-text val-kekerapan"></div>
+                 <select class="edit-mode inp-kekerapan" style="width:100%; padding:8px; border:1px solid var(--border); border-radius:6px; font-size:12px;">
+                    <option value="" disabled ${!kekerapan ? 'selected' : ''}>Pilih</option>
+                    <option value="HARIAN" ${kekerapan==='HARIAN'?'selected':''}>HARIAN</option>
+                    <option value="MINGGUAN" ${kekerapan==='MINGGUAN'?'selected':''}>MINGGUAN</option>
+                    <option value="BULANAN" ${kekerapan==='BULANAN'?'selected':''}>BULANAN</option>
+                 </select>
+              </td>
+              <td>
+                 <div class="view-mode val-text val-purata"></div>
+                 <input type="number" class="edit-mode inp-purata" style="width:100%; padding:8px; border:1px solid var(--border); border-radius:6px; font-size:12px;" placeholder="0" value="${purata}">
+              </td>
+              <td>
+                 <div class="view-mode val-text val-ukuran"></div>
+                 <select class="edit-mode inp-ukuran" style="width:100%; padding:8px; border:1px solid var(--border); border-radius:6px; font-size:12px;">
+                    <option value="KG" ${ukuran==='KG'?'selected':''}>KG</option>
+                    <option value="LITER" ${ukuran==='LITER'?'selected':''}>LITER</option>
+                    <option value="UNIT" ${ukuran==='UNIT'?'selected':''}>UNIT</option>
+                    <option value="MT" ${ukuran==='MT'?'selected':''}>MT</option>
+                 </select>
+              </td>
+              <td style="text-align:center;">
+                 <div style="display:flex; gap:4px; justify-content:center;">
+                    <button type="button" class="btn btn-success btn-small edit-mode pegawai-save-btn" onclick="moduleNaziran.saveRow(this)">Simpan</button>
+                    <button type="button" class="btn btn-primary btn-small view-mode pegawai-save-btn" onclick="moduleNaziran.editRow(this)">Pinda</button>
+                    <button type="button" class="btn btn-outline btn-small pegawai-save-btn" style="color:var(--danger); border-color:var(--danger);" onclick="this.closest('tr').remove()">X</button>
+                 </div>
+              </td>
+          `;
+          tbody.appendChild(tr);
+          if(nama || alamat) this.saveRow(tr.querySelector('.btn-success'));
+      },
+
+      addPelangganRow(kategori='', lokasi='', barang='', ukuran='', jumlah='') {
+          const tbody = document.getElementById('nzPelangganTbody');
+          const tr = document.createElement('tr');
+          tr.className = 'nz-row editing';
+          tr.innerHTML = `
+              <td>
+                 <div class="view-mode val-text val-kategori"></div>
+                 <select class="edit-mode inp-kategori" style="width:100%; padding:8px; border:1px solid var(--border); border-radius:6px; font-size:12px;">
+                    <option value="" disabled ${!kategori ? 'selected' : ''}>Pilih</option>
+                    <option value="PERUNCIT" ${kategori==='PERUNCIT'?'selected':''}>PERUNCIT</option>
+                    <option value="PEMBORONG" ${kategori==='PEMBORONG'?'selected':''}>PEMBORONG</option>
+                    <option value="PENGGUNA" ${kategori==='PENGGUNA'?'selected':''}>PENGGUNA</option>
+                 </select>
+              </td>
+              <td>
+                 <div class="view-mode val-text val-lokasi"></div>
+                 <input type="text" class="edit-mode inp-lokasi" style="width:100%; padding:8px; border:1px solid var(--border); border-radius:6px; font-size:12px;" placeholder="Cth: Georgetown" value="${lokasi}">
+              </td>
+              <td>
+                 <div class="view-mode val-text val-barang"></div>
+                 <input type="text" class="edit-mode inp-barang" style="width:100%; padding:8px; border:1px solid var(--border); border-radius:6px; font-size:12px;" placeholder="Cth: Semua / Gula" value="${barang}">
+              </td>
+              <td>
+                 <div class="view-mode val-text val-ukuran"></div>
+                 <select class="edit-mode inp-ukuran" style="width:100%; padding:8px; border:1px solid var(--border); border-radius:6px; font-size:12px;">
+                    <option value="KG" ${ukuran==='KG'?'selected':''}>KG</option>
+                    <option value="LITER" ${ukuran==='LITER'?'selected':''}>LITER</option>
+                    <option value="UNIT" ${ukuran==='UNIT'?'selected':''}>UNIT</option>
+                    <option value="MT" ${ukuran==='MT'?'selected':''}>MT</option>
+                 </select>
+              </td>
+              <td>
+                 <div class="view-mode val-text val-jumlah"></div>
+                 <input type="number" class="edit-mode inp-jumlah" style="width:100%; padding:8px; border:1px solid var(--border); border-radius:6px; font-size:12px;" placeholder="0" value="${jumlah}">
+              </td>
+              <td style="text-align:center;">
+                 <div style="display:flex; gap:4px; justify-content:center;">
+                    <button type="button" class="btn btn-success btn-small edit-mode pegawai-save-btn" onclick="moduleNaziran.saveRow(this)">Simpan</button>
+                    <button type="button" class="btn btn-primary btn-small view-mode pegawai-save-btn" onclick="moduleNaziran.editRow(this)">Pinda</button>
+                    <button type="button" class="btn btn-outline btn-small pegawai-save-btn" style="color:var(--danger); border-color:var(--danger);" onclick="this.closest('tr').remove()">X</button>
+                 </div>
+              </td>
+          `;
+          tbody.appendChild(tr);
+          if(kategori || lokasi) this.saveRow(tr.querySelector('.btn-success'));
+      },
+
+      addStorRow(barang='', kuantiti='', ukuran='') {
+          const tbody = document.getElementById('nzStorTbody');
+          const tr = document.createElement('tr');
+          tr.className = 'nz-row editing';
+          tr.innerHTML = `
+              <td>
+                 <div class="view-mode val-text val-barang"></div>
+                 <input type="text" class="edit-mode inp-barang" style="width:100%; padding:8px; border:1px solid var(--border); border-radius:6px; font-size:12px;" placeholder="Cth: Minyak Masak" value="${barang}">
+              </td>
+              <td>
+                 <div class="view-mode val-text val-kuantiti"></div>
+                 <input type="number" class="edit-mode inp-kuantiti" style="width:100%; padding:8px; border:1px solid var(--border); border-radius:6px; font-size:12px;" placeholder="0" value="${kuantiti}">
+              </td>
+              <td>
+                 <div class="view-mode val-text val-ukuran"></div>
+                 <select class="edit-mode inp-ukuran" style="width:100%; padding:8px; border:1px solid var(--border); border-radius:6px; font-size:12px;">
+                    <option value="KG" ${ukuran==='KG'?'selected':''}>KG</option>
+                    <option value="LITER" ${ukuran==='LITER'?'selected':''}>LITER</option>
+                    <option value="UNIT" ${ukuran==='UNIT'?'selected':''}>UNIT</option>
+                    <option value="MT" ${ukuran==='MT'?'selected':''}>MT</option>
+                 </select>
+              </td>
+              <td style="text-align:center;">
+                 <div style="display:flex; gap:4px; justify-content:center;">
+                    <button type="button" class="btn btn-success btn-small edit-mode pegawai-save-btn" onclick="moduleNaziran.saveRow(this)">Simpan</button>
+                    <button type="button" class="btn btn-primary btn-small view-mode pegawai-save-btn" onclick="moduleNaziran.editRow(this)">Pinda</button>
+                    <button type="button" class="btn btn-outline btn-small pegawai-save-btn" style="color:var(--danger); border-color:var(--danger);" onclick="this.closest('tr').remove()">X</button>
+                 </div>
+              </td>
+          `;
+          tbody.appendChild(tr);
+          if(barang) this.saveRow(tr.querySelector('.btn-success'));
+      },
+
+      addPengedaranRow(kenderaan='', cara='') {
+          const tbody = document.getElementById('nzPengedaranTbody');
+          const tr = document.createElement('tr');
+          tr.className = 'nz-row editing';
+          tr.innerHTML = `
+              <td>
+                 <div class="view-mode val-text val-kenderaan"></div>
+                 <input type="text" class="edit-mode inp-kenderaan" style="width:100%; padding:8px; border:1px solid var(--border); border-radius:6px; font-size:12px;" placeholder="Cth: Lori / Van" value="${kenderaan}">
+              </td>
+              <td>
+                 <div class="view-mode val-text val-cara"></div>
+                 <input type="text" class="edit-mode inp-cara" style="width:100%; padding:8px; border:1px solid var(--border); border-radius:6px; font-size:12px;" placeholder="Cth: Hantar Sendiri" value="${cara}">
+              </td>
+              <td style="text-align:center;">
+                 <div style="display:flex; gap:4px; justify-content:center;">
+                    <button type="button" class="btn btn-success btn-small edit-mode pegawai-save-btn" onclick="moduleNaziran.saveRow(this)">Simpan</button>
+                    <button type="button" class="btn btn-primary btn-small view-mode pegawai-save-btn" onclick="moduleNaziran.editRow(this)">Pinda</button>
+                    <button type="button" class="btn btn-outline btn-small pegawai-save-btn" style="color:var(--danger); border-color:var(--danger);" onclick="this.closest('tr').remove()">X</button>
+                 </div>
+              </td>
+          `;
+          tbody.appendChild(tr);
+          if(kenderaan) this.saveRow(tr.querySelector('.btn-success'));
+      },
+
+      toggleLokasi(val) {
+          const btn = document.getElementById('btnLokasiGps');
+          const lat = document.getElementById('naz_LATITUDE');
+          const lng = document.getElementById('naz_LONGITUDE');
+          if(val === 'AUTO') {
+             btn.style.display = 'inline-flex';
+             lat.readOnly = true;
+             lng.readOnly = true;
+             lat.style.background = '#f8fafc';
+             lng.style.background = '#f8fafc';
+          } else {
+             btn.style.display = 'none';
+             lat.readOnly = false;
+             lng.readOnly = false;
+             lat.style.background = '';
+             lng.style.background = '';
+          }
+      },
+
+      getLokasiGPS() {
+          const btn = document.getElementById('btnLokasiGps');
+          btn.innerHTML = 'Mencari...';
+          btn.disabled = true;
+          if(navigator.geolocation) {
+             navigator.geolocation.getCurrentPosition(pos => {
+                document.getElementById('naz_LATITUDE').value = pos.coords.latitude.toFixed(6);
+                document.getElementById('naz_LONGITUDE').value = pos.coords.longitude.toFixed(6);
+                btn.innerHTML = '📍 LOKASI BERJAYA';
+                setTimeout(() => { btn.innerHTML = '📍 LOKASI GPS'; btn.disabled = false; }, 3000);
+             }, err => {
+                showToast('Gagal mendapatkan lokasi: ' + err.message, 'error');
+                btn.innerHTML = '📍 LOKASI GPS';
+                btn.disabled = false;
+             }, { enableHighAccuracy: true });
+          } else {
+             showToast('Peranti anda tidak menyokong GPS.', 'error');
+             btn.innerHTML = '📍 LOKASI GPS';
+             btn.disabled = false;
+          }
+      },
+
+      closeForm() { 
+          document.getElementById('naziranFormCard').style.display = 'none'; 
+          document.getElementById('nazSearchCard').style.display = 'block'; 
+          document.getElementById('nazHistoryCard').style.display = document.getElementById('nazHistoryTableBody').innerHTML.includes('<tr>') ? 'block' : 'none';
+          document.getElementById('naziranKpiContainer').style.display = 'grid'; 
+          this.currentRecordId = null;
+      },
+
+      resetForm() {
+          document.getElementById('nazForm').reset();
+          document.getElementById('naz_ID_NAZIRAN').value = '';
+          document.getElementById('naz_NO_SIRI').value = '';
+          
+          const userEmail = document.getElementById('displayUser').textContent;
+          document.getElementById('naz_EMEL_PEGAWAI').value = userEmail;
+          
+          document.getElementById('kategori_lokasi').value = 'MANUAL';
+          this.toggleLokasi('MANUAL');
+
+          document.getElementById('naz_JENIS_NAZIRAN').disabled = false;
+          document.getElementById('naz_NAMA_SYARIKAT').readOnly = false;
+          document.getElementById('naz_NO_SSM').readOnly = false;
+          document.getElementById('nzBarangTbody').innerHTML = '';
+          document.getElementById('nzPembekalTbody').innerHTML = '';
+          document.getElementById('nzPelangganTbody').innerHTML = '';
+          document.getElementById('nzStorTbody').innerHTML = '';
+          document.getElementById('nzPengedaranTbody').innerHTML = '';
+
+          document.getElementById('nazFormTitle').textContent = 'Rekod Naziran Baharu';
+          document.getElementById('nazFormMode').textContent = 'BARU';
+          document.getElementById('nazFormMode').className = 'badge badge-info';
+          
+          if(app.state.scope !== 'SEMUA') {
+              document.getElementById('naz_JENIS_NAZIRAN').value = app.state.scope;
+              document.getElementById('naz_JENIS_NAZIRAN').disabled = true;
+          }
+      },
+
+      async saveForm() {
+        const form = document.getElementById('nazForm');
+        if(!form.checkValidity()) { showToast('Sila lengkapkan maklumat wajib yang bertanda *', 'error'); return; }
+        
+        const data = {};
+        new FormData(form).forEach((value, key) => data[key] = value);
+        if(app.state.scope !== 'SEMUA') data['JENIS_NAZIRAN'] = app.state.scope;
+
+        try {
+            await api.saveNaziran(data, app.state.scope);
+            this.closeForm();
+            this.loadData();
+            showToast('Rekod Naziran berjaya dihantar ke pangkalan data!', 'success');
+        } catch (e) { showToast(e.message, 'error'); }
+      }
+    };
+
+    const moduleAdmin = {
+      kelCurrentPage: 1,
+      kelFilteredData: [],
+
+      init() { 
+          this.switchTab('admin-dashboard', document.querySelector('#view-admin .toolbar .btn-primary'));
+          this.loadDashboard();
+      },
+      async loadDashboard() {
+          const stats = await api.getAdminDashboardStats();
+          document.getElementById('admKpiUtamaSyarikat').textContent = stats.syarikat;
+          document.getElementById('admKpiUtamaKelulusan').textContent = stats.kelulusan;
+          document.getElementById('admKpiUtamaDokumen').textContent = stats.kelulusan;
+          document.getElementById('admKpiUtamaLesen').textContent = stats.lesen;
+          document.getElementById('admKpiUtamaLesenAktif').textContent = stats.lesenAktif;
+          document.getElementById('admKpiUtamaPermit').textContent = stats.permit;
+          document.getElementById('admKpiUtamaPermitAktif').textContent = stats.permitAktif;
+          document.getElementById('admKpiUtamaPermitTamat').textContent = stats.permitTamat;
+      },
+      switchTab(tabId, btn) {
+          document.querySelectorAll('.admin-tab-content').forEach(el => el.style.display = 'none');
+          const target = document.getElementById(tabId);
+          if(target) target.style.display = 'block';
+          
+          if(btn) {
+             btn.parentElement.querySelectorAll('.btn').forEach(b => {
+                 b.classList.remove('btn-primary');
+                 b.classList.add('btn-outline');
+             });
+             btn.classList.remove('btn-outline');
+             btn.classList.add('btn-primary');
+          }
+          
+          // Trigger special loads based on tab
+          if(tabId === 'admin-kelulusan') this.searchKelulusan();
+          if(tabId === 'admin-syarikat') this.searchSyarikat();
+          if(tabId === 'admin-emel') this.loadEmelDashboard();
+      },
+      
+      // -- CARIAN KELULUSAN / PERMIT LOGIC --
+      searchKelulusan() {
+          const key = document.getElementById('admKelSearchKey').value.trim().toLowerCase();
+          const alamat = document.getElementById('admKelSearchAlamat').value.trim().toLowerCase();
+          const status = document.getElementById('admKelSearchStatus').value;
+          const jenis = document.getElementById('admKelSearchJenis').value;
+
+          // Admin Permit / Lesen logic lock
+          let forcedScope = app.state.scope;
+          if (forcedScope !== 'SEMUA') {
+              document.getElementById('admKelSearchJenis').value = forcedScope;
+              document.getElementById('admKelSearchJenis').disabled = true;
+          }
+
+          this.kelFilteredData = DB.kelulusan.filter(r => {
+              const matchScope = forcedScope === 'SEMUA' || r.jenis === forcedScope;
+              const matchKey = r.syarikat.toLowerCase().includes(key) || r.ssm.toLowerCase().includes(key);
+              const matchAlamat = !alamat || r.alamat.toLowerCase().includes(alamat);
+              const matchStatus = status === 'SEMUA' || r.status === status || (status === 'HAMPIR TAMAT' && r.status === 'HAMPIR TAMAT');
+              const matchJenis = (jenis === 'SEMUA' && forcedScope === 'SEMUA') || r.jenis === jenis || r.jenis === forcedScope;
+              return matchScope && matchKey && matchAlamat && matchStatus && matchJenis;
+          });
+
+          this.kelCurrentPage = 1;
+          this.renderKelulusanTable();
+      },
+      resetKelulusan() {
+          document.getElementById('admKelSearchKey').value = '';
+          document.getElementById('admKelSearchAlamat').value = '';
+          document.getElementById('admKelSearchStatus').value = 'SEMUA';
+          document.getElementById('admKelSearchJenis').value = 'SEMUA';
+          this.searchKelulusan();
+      },
+      renderKelulusanTable() {
+          const limit = parseInt(document.getElementById('admKelLimit').value, 10);
+          const totalPages = Math.ceil(this.kelFilteredData.length / limit) || 1;
+          const startIdx = (this.kelCurrentPage - 1) * limit;
+          const endIdx = startIdx + limit;
+          const paginatedData = this.kelFilteredData.slice(startIdx, endIdx);
+
+          const tbody = document.getElementById('admKelTableBody');
+
+          if(paginatedData.length === 0) {
+              tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding: 20px;">Tiada rekod ditemui menepati kriteria carian.</td></tr>';
+              document.getElementById('admKelPagination').style.display = 'none';
+              return;
+          }
+
+          tbody.innerHTML = paginatedData.map(r => {
+             let badgeCls = 'badge-info';
+             if(r.status === 'AKTIF') badgeCls = 'badge-aktif';
+             if(r.status.includes('TAMAT')) badgeCls = 'badge-tamat';
+             if(r.status === 'HAMPIR TAMAT') badgeCls = 'badge-warning';
+
+             return `<tr>
+                <td><button class="btn btn-outline btn-small" onclick="moduleAdmin.showKelulusanForm(true, '${r.id}')">Edit</button></td>
+                <td><div class="company-name">${r.syarikat}</div><div class="text-sm-muted">SSM: ${r.ssm} <br> ${r.alamat}</div></td>
+                <td><span class="badge badge-info" style="margin-bottom:4px;">${r.jenis}</span><br><b>${r.dokumen}</b></td>
+                <td>${r.tarikhTamat}<br><span class="text-sm-muted">${r.hariBaki} Hari Baki</span></td>
+                <td><span class="badge ${badgeCls}">${r.status}</span></td>
+             </tr>`;
+          }).join('');
+
+          document.getElementById('admKelPagination').style.display = 'flex';
+          document.getElementById('admKelPageInfo').textContent = `Muka ${this.kelCurrentPage} / ${totalPages}`;
+      },
+      changeKelPage(direction) {
+          const limit = parseInt(document.getElementById('admKelLimit').value, 10);
+          const totalPages = Math.ceil(this.kelFilteredData.length / limit) || 1;
+          this.kelCurrentPage += direction;
+          
+          if(this.kelCurrentPage < 1) this.kelCurrentPage = 1;
+          if(this.kelCurrentPage > totalPages) this.kelCurrentPage = totalPages;
+          
+          this.renderKelulusanTable();
+      },
+      
+      // -- KELULUSAN FORM LOGIC --
+      showKelulusanForm(isEdit = false, id = null) {
+          document.getElementById('admKelFormCard').style.display = 'block';
+          document.getElementById('admKelSearchCard').style.display = 'none';
+          
+          if (isEdit && id) {
+              document.getElementById('admKelFormTitle').innerText = 'Kemaskini Lesen / Permit';
+              const r = DB.kelulusan.find(x => x.id === id);
+              if (r) {
+                  document.getElementById('admKelNamaSyarikat').value = r.syarikat || '';
+                  document.getElementById('admKelAlamat').value = r.alamat || '';
+                  document.getElementById('admKelNoSsm').value = r.ssm || '';
+                  document.getElementById('admKelNoDokumen').value = r.dokumen || '';
+                  document.getElementById('admKelJenisDokumen').value = r.jenis || 'LESEN';
+                  
+                  // Convert DD/MM/YYYY to YYYY-MM-DD for date input
+                  let formattedDate = '';
+                  if (r.tarikhTamat && r.tarikhTamat.includes('/')) {
+                     const parts = r.tarikhTamat.split('/');
+                     if(parts.length === 3) formattedDate = `${parts[2]}-${parts[1]}-${parts[0]}`;
+                  }
+                  document.getElementById('admKelTarikhTamat').value = formattedDate; 
+              }
+          } else {
+              document.getElementById('admKelFormTitle').innerText = 'Pendaftaran Lesen / Permit Baharu';
+              // Clear basic inputs
+              ['admKelNamaSyarikat', 'admKelAlamat', 'admKelNoSsm', 'admKelNoDokumen', 'admKelNoSiri', 'admKelJenisPermohonan', 'admKelTarikhMula', 'admKelTarikhTamat', 'admKelCatatan'].forEach(id => document.getElementById(id).value = '');
+          }
+          
+          document.getElementById('admKelBarangTbody').innerHTML = '';
+          document.getElementById('admKelPembekalTbody').innerHTML = '';
+          this.addKelBarangRow();
+          this.addKelPembekalRow();
+          
+          document.getElementById('admKelFormCard').scrollIntoView({behavior: 'smooth'});
+      },
+      hideKelulusanForm() {
+          document.getElementById('admKelFormCard').style.display = 'none';
+          document.getElementById('admKelSearchCard').style.display = 'block';
+          document.getElementById('admKelSearchCard').scrollIntoView({behavior: 'smooth'});
+      },
+      addKelBarangRow() {
+          const tbody = document.getElementById('admKelBarangTbody');
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+              <td><input type="text" style="width:100%; padding:8px; border:1px solid var(--border); border-radius:6px; font-size:12px;" placeholder="Jenis Barang"></td>
+              <td><input type="number" style="width:100%; padding:8px; border:1px solid var(--border); border-radius:6px; font-size:12px;" placeholder="0"></td>
+              <td>
+                 <select style="width:100%; padding:8px; border:1px solid var(--border); border-radius:6px; font-size:12px;">
+                    <option value="KG">KG</option><option value="LITER">LITER</option><option value="UNIT">UNIT</option><option value="MT">MT</option>
+                 </select>
+              </td>
+              <td><input type="text" style="width:100%; padding:8px; border:1px solid var(--border); border-radius:6px; font-size:12px;" placeholder="Catatan"></td>
+              <td style="text-align:center;"><button type="button" class="btn btn-outline btn-small" style="color:var(--danger); border-color:var(--danger);" onclick="this.closest('tr').remove()">X</button></td>
+          `;
+          tbody.appendChild(tr);
+      },
+      addKelPembekalRow() {
+          const tbody = document.getElementById('admKelPembekalTbody');
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+              <td><input type="text" style="width:100%; padding:8px; border:1px solid var(--border); border-radius:6px; font-size:12px;" placeholder="Nama Syarikat"></td>
+              <td><input type="text" style="width:100%; padding:8px; border:1px solid var(--border); border-radius:6px; font-size:12px;" placeholder="No SSM"></td>
+              <td><input type="text" style="width:100%; padding:8px; border:1px solid var(--border); border-radius:6px; font-size:12px;" placeholder="Alamat"></td>
+              <td>
+                 <select style="width:100%; padding:8px; border:1px solid var(--border); border-radius:6px; font-size:12px;">
+                    <option value="PEMBORONG">PEMBORONG</option><option value="PENGILANG">PENGILANG</option><option value="PERUNCIT">PERUNCIT</option>
+                 </select>
+              </td>
+              <td><input type="text" style="width:100%; padding:8px; border:1px solid var(--border); border-radius:6px; font-size:12px;" placeholder="Jenis Barang Kawalan"></td>
+              <td style="text-align:center;"><button type="button" class="btn btn-outline btn-small" style="color:var(--danger); border-color:var(--danger);" onclick="this.closest('tr').remove()">X</button></td>
+          `;
+          tbody.appendChild(tr);
+      },
+      saveKelulusan() {
+          const nama = document.getElementById('admKelNamaSyarikat').value.trim();
+          if(!nama) {
+             showToast('Sila masukkan Nama Syarikat', 'error');
+             return;
+          }
+          showToast('Rekod Lesen/Permit berjaya disimpan!', 'success');
+          this.hideKelulusanForm();
+      },
+
+      // -- SYARIKAT MASTER LOGIC --
+      async loadSyarikat() {
+        const tbody = document.getElementById('admSyarikatBody');
+        tbody.innerHTML = '<tr><td colspan="5" style="text-align:center; padding: 30px;">Memuatkan syarikat master...</td></tr>';
+        const data = await api.getSyarikat(app.state.scope);
+        tbody.innerHTML = data.map(d => `<tr>
+           <td><button class="btn btn-outline btn-small" onclick="showToast('Fungsi Edit Simulasi')">Edit</button></td>
+           <td><div class="company-name">${d.nama}</div></td>
+           <td>${d.ssm}</td>
+           <td><span class="badge badge-info">${d.sektorTerlibat}</span></td>
+           <td><span class="badge badge-aktif">${d.status}</span></td>
+        </tr>`).join('');
+      },
+      searchSyarikat() {
+          const nama = document.getElementById('admSySearchNama').value.trim().toLowerCase();
+          const alamat = document.getElementById('admSySearchAlamat').value.trim().toLowerCase();
+          const kategori = document.getElementById('admSySearchKat').value;
+          
+          const tbody = document.getElementById('admSyarikatBody');
+          
+          // Papar semua jika kosong, atau tapis ikut kata kunci
+          const results = DB.kelulusan.filter(r => {
+              const matchNama = !nama || r.syarikat.toLowerCase().includes(nama);
+              const matchAlamat = !alamat || r.alamat.toLowerCase().includes(alamat);
+              const matchKategori = kategori === 'SEMUA' || r.jenis === kategori;
+              return matchNama && matchAlamat && matchKategori;
+          });
+          
+          if(results.length === 0) {
+             tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding: 20px;">Tiada syarikat ditemui.</td></tr>';
+             return;
+          }
+          
+          let uniqueCos = {};
+          results.forEach(r => {
+             if(!uniqueCos[r.ssm]) {
+                 uniqueCos[r.ssm] = { nama: r.syarikat, ssm: r.ssm, pegawai: r.pegawai || '-', telefon: r.telefon || '-', sektor: new Set(), status: r.status };
+             }
+             uniqueCos[r.ssm].sektor.add(r.jenis);
+             if(r.status === 'AKTIF') uniqueCos[r.ssm].status = 'AKTIF';
+          });
+
+          tbody.innerHTML = Object.values(uniqueCos).map(d => `<tr>
+             <td><button class="btn btn-outline btn-small" onclick="moduleAdmin.showSyarikatForm(true, '${d.nama}')">Edit</button></td>
+             <td><div class="company-name">${d.nama}</div></td>
+             <td>${d.ssm}</td>
+             <td>${d.pegawai} / ${d.telefon}</td>
+             <td><span class="badge badge-info">${Array.from(d.sektor).join(' & ')}</span></td>
+             <td><span class="badge ${d.status === 'AKTIF' ? 'badge-aktif' : 'badge-tamat'}">${d.status}</span></td>
+          </tr>`).join('');
+          
+          // Update KPI based on search or all
+          let totalSyarikat = Object.keys(uniqueCos).length;
+          let aktif = Object.values(uniqueCos).filter(c => c.status === 'AKTIF').length;
+          document.getElementById('admKpiSyarikat').textContent = totalSyarikat;
+          document.getElementById('admKpiAktif').textContent = aktif;
+          document.getElementById('admKpiTakAktif').textContent = totalSyarikat - aktif;
+          
+          showToast('Carian berjaya (Simulasi)', 'success');
+      },
+      resetSyarikat() {
+          document.getElementById('admSySearchNama').value = '';
+          document.getElementById('admSySearchAlamat').value = '';
+          document.getElementById('admSySearchKat').value = 'SEMUA';
+          document.getElementById('admSyarikatBody').innerHTML = '<tr><td colspan="6" style="text-align:center; padding: 20px;">Sila tekan Cari Syarikat untuk papar senarai.</td></tr>';
+      },
+      showSyarikatForm(isEdit = false, nama = '') {
+          document.getElementById('admSyFormCard').style.display = 'block';
+          document.getElementById('admSySearchCard').style.display = 'none';
+          document.getElementById('admSyFormTitle').innerText = isEdit ? 'Kemaskini Syarikat' : 'Pendaftaran Syarikat Baharu';
+          
+          if(!isEdit) {
+              document.getElementById('admSyFormNama').value = '';
+              document.getElementById('admSyFormAlamat').value = '';
+              document.getElementById('admSyFormSsm').value = '';
+              document.getElementById('admSyFormSektor').value = '';
+              document.getElementById('admSyFormPegawai').value = '';
+              document.getElementById('admSyFormTel').value = '';
+              document.getElementById('admSyFormEmel').value = '';
+              document.getElementById('admSyFormCawangan').value = 'TIDAK';
+              document.getElementById('admSyFormStatus').value = 'AKTIF';
+          } else {
+              document.getElementById('admSyFormNama').value = nama;
+          }
+          document.getElementById('admSyFormCard').scrollIntoView({behavior: 'smooth'});
+      },
+      hideSyarikatForm() {
+          document.getElementById('admSyFormCard').style.display = 'none';
+          document.getElementById('admSySearchCard').style.display = 'block';
+          document.getElementById('admSySearchCard').scrollIntoView({behavior: 'smooth'});
+      },
+      saveSyarikat() {
+          const nama = document.getElementById('admSyFormNama').value.trim();
+          if(!nama) {
+             showToast('Sila masukkan Nama Syarikat', 'error');
+             return;
+          }
+          showToast('Maklumat syarikat berjaya disimpan!', 'success');
+          this.hideSyarikatForm();
+      },
+
+      // -- NOTIFIKASI EMEL LOGIC --
+      loadEmelDashboard() {
+          let forcedScope = app.state.scope;
+          let dataScope = DB.kelulusan;
+          
+          if (forcedScope !== 'SEMUA') {
+              dataScope = DB.kelulusan.filter(r => r.jenis === forcedScope);
+          }
+
+          let unikPemilik = new Set(dataScope.map(d => d.ssm)).size;
+          let hampir = dataScope.filter(d => d.status === 'HAMPIR TAMAT').length;
+          let tamat = dataScope.filter(d => d.status === 'TAMAT').length;
+
+          document.getElementById('admKpiEmelJumlah').textContent = unikPemilik;
+          document.getElementById('admKpiEmelHampir').textContent = hampir;
+          document.getElementById('admKpiEmelTamat').textContent = tamat;
+      }
+    };
+
+    const app = {
+      state: { role: 'SUPER ADMIN', scope: 'SEMUA' },
+      
+      init() {
+        const roleSel = document.querySelector('.sigma-sim-select');
+        if (roleSel) this.setRole(roleSel.value);
+      },
+      
+      setRole(role) {
+        this.state.role = role;
+        
+        // Tetapkan Skop Data
+        if (role.includes('PERMIT')) this.state.scope = 'PERMIT';
+        else if (role.includes('LESEN')) this.state.scope = 'LESEN';
+        else this.state.scope = 'SEMUA';
+
+        const displayRole = document.getElementById('displayRole');
+        if (displayRole) displayRole.textContent = role;
+
+        // Kemaskini Lencana Scope di UI
+        document.querySelectorAll('.badge[id$="ScopeBadge"]').forEach(el => {
+          if (el.id === 'lapanganScopeBadge') {
+            el.textContent = 'SKOP: SEMUA';
+            el.className = 'badge badge-warning';
+          } else {
+            el.textContent = 'SKOP: ' + this.state.scope;
+            el.className = 'badge ' + (this.state.scope === 'SEMUA' ? 'badge-warning' : 'badge-dark');
+          }
+        });
+
+        // Tentukan Akses Modul Berdasarkan Peranan
+        const isSuper = role === 'SUPER ADMIN';
+        const isAdmin = role.includes('ADMIN');
+        const isNaziran = role.includes('NAZIRAN');
+        const isPengguna = role === 'PENGGUNA';
+
+        const scopeObj = {
+            canHome: isSuper || isAdmin,
+            canAdmin: isSuper || isAdmin,
+            canLapangan: true, // Semua dibenarkan
+            canNaziran: isSuper || isAdmin || isNaziran
+        };
+
+        // Kunci Tab Pegawai
+        const tabPegawaiBtn = document.querySelector('button[onclick="moduleAdmin.switchTab(\'admin-pegawai\', this)"]');
+        if (tabPegawaiBtn) {
+            tabPegawaiBtn.style.display = isSuper ? 'inline-flex' : 'none';
+        }
+
+        // RESET SEMUA INPUT APABILA TUKAR PERANAN
+        moduleLapangan.reset();
+        moduleNaziran.closeForm();
+        moduleNaziran.resetForm();
+
+        document.querySelectorAll('.admin-nz-kpi').forEach(el => {
+            el.style.display = (isAdmin || isSuper) ? 'flex' : 'none';
+        });
+
+        this.applyNav(scopeObj);
+      },
+
+      applyNav(scopeObj) {
+        // Sembunyi/Papar menu mengikut akses
+        const navHome = document.querySelector('a[data-target="home"]');
+        const navAdmin = document.querySelector('a[data-target="admin"]');
+        const navNaziran = document.querySelector('a[data-target="naziran"]');
+        const navLapangan = document.querySelector('a[data-target="lapangan"]');
+        
+        if (navHome) navHome.style.display = scopeObj.canHome ? '' : 'none';
+        if (navAdmin) navAdmin.style.display = scopeObj.canAdmin ? '' : 'none';
+        if (navNaziran) navNaziran.style.display = scopeObj.canNaziran ? '' : 'none';
+        
+        // Cari modul pertama yang dibenarkan dan papar sebagai default
+        if(scopeObj.canHome) this.navigate('home');
+        else if(scopeObj.canLapangan) this.navigate('lapangan');
+      },
+
+      navigate(target) {
+        document.querySelectorAll('.sigma-exec-nav a').forEach(btn => btn.classList.remove('active'));
+        const targetBtn = document.querySelector(`.sigma-exec-nav a[data-target="${target}"]`);
+        if (targetBtn) targetBtn.classList.add('active');
+
+        document.querySelectorAll('.view-section').forEach(view => view.classList.remove('active'));
+        const targetView = document.getElementById(`view-${target}`);
+        if (targetView) targetView.classList.add('active');
+
+        if (target === 'home') this.loadHome();
+        else if (target === 'lapangan') moduleLapangan.init();
+        else if (target === 'naziran') moduleNaziran.init();
+        else if (target === 'admin') moduleAdmin.init();
+      },
+
+      async loadHome() {
+        const container = document.getElementById('homeKpiContainer');
+        const alertBox = document.getElementById('homeAlert');
+        if (!container || !alertBox) return;
+        
+        alertBox.style.display = 'block'; alertBox.className = 'alert info'; alertBox.textContent = 'Menyegerakkan data...';
+        container.innerHTML = '';
+
+        try {
+            const stats = await api.getDashboardStats(this.state.scope);
+            alertBox.style.display = 'none';
+            container.innerHTML = stats.map(s => `<div class="kpi-card"><div class="kpi-label">${s.label}</div><div class="kpi-val">${s.value}</div></div>`).join('');
+        } catch (e) {
+            alertBox.className = 'alert error'; alertBox.textContent = 'Gagal memuatkan statistik: ' + e.message;
+        }
+      }
+    };
+
+    window.addEventListener('DOMContentLoaded', () => { 
+        if(typeof app !== 'undefined') app.init(); 
     });
-
-    window.addEventListener('message', function(event){
-      // Ruang ini disediakan jika kemudian hari Apps Script mahu menghantar mesej status kepada Vercel.
-    });
-
-    openSigma(getModeFromUrl());
   </script>
 </body>
 </html>
